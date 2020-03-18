@@ -1,2 +1,71 @@
-# sae-wdd319
-Teaching repository for SAE Wien WDD319
+# PHP Basics - WDD918
+
+Dieses README enhält einige Infos zu dieser Repository, nützliche Links und andere Infos, die sich in den letzten Unterrichten als hilfreich erwiesen haben. Ich werde versuchen die Datei aktuell zu halten und mit weiteren Infos zu füllen.
+
+## Text Editor
+
+Ihr braucht für den Unterricht einen Text-Editor. Im Prinzip könnt ihr jeden beliebigen Plaintext Editor verwenden. Ich bin persönlich bin ein großer Fan von PhpStorm. Als SAE Studenten kriegt ihr das gesamte Programm Angebot vom Hersteller JetBrains, also auch PhpStorm kostenlos als Student Version. Nähere Infos auf der Hersteller Website: https://www.jetbrains.com/community/education/#students
+
+## `docker-compose`
+
+Wer gerne Docker/Docker Compose nutzen möchte, findet ein entsprechendes File im Repository. Ihr könnte aber genauso gut auch den XAMPP/MAMP/whatever verwenden.
+
+### Web
++ Apache: [localhost:8080](localhost:8080)
++ PhpMyAdmin: [localhost:8081](localhost:8081)
+
+### Database
++ MariaDB: [localhost:3306](localhost:3306)
+
+### Composer
+
+Das MVC verwendet Composer. Wir haben die Bibliothek MPDF mittels Composer installiert. Um alle Abhängigkeiten nach dem Pull zu installieren führe im Terminal im Ordner `mvc` den Befehl `php composer.phar install` aus. Danach sollte ein Ordner angelegt werden mit dem Namen `vendor` und mehreren Inhalten. Bis dahin funktioniert das MVC möglicherweise nicht mehr.
+
+## Nützliche Informationen & Links
+
++ PHP Docs: https://www.php.net/
++ MySQL Docs: https://dev.mysql.com/doc/
++ GIT Flow: https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
++ https://learngitbranching.js.org/
++ Regular Expressions: https://regex101.com/
++ https://regexcrossword.com
+
+### Cheatsheets
+
++ Markdown: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
++ GIT: https://www.atlassian.com/git/tutorials/atlassian-git-cheatsheet
++ https://devhints.io/
++ http://cheat.sh/
+
+### Alternative relationale Datenbanksysteme
+
++ PostgreSQL (bspw. Volltextsuche): https://www.postgresql.org/
+
+### Snippets
+
+```php
+
+/**
+ * $link holds the DB connection object created by mysqli_connect()
+ */
+$result = mysqli_query($link, "SELECT ...");
+
+while ($row = mysqli_fetch_assoc($result)) {
+    // do something with the current $row
+}
+```
+
+```php
+/**
+ * Die extract Funktion macht im Hintergrund folgendes:
+ *
+ * $id = $row['id'];
+ * $title = $row['title'];
+ * usw.
+ */
+extract($row);
+```
+
+### Misc
+
++ Manche Verzeichnisse in diesem Repository werden ein `.gitkeep` file beinhalten und sonst nichts. Das liegt daran, dass GIT leere Verzeichnisse nicht versioniert, ich möchte euch aber unter Umständen schon ein paar Ordner vorbereiten, in die später einmal etwas rein kommen wird.
