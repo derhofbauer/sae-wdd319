@@ -1,0 +1,10 @@
+    </main>
+    <footer>
+        <ul>
+            <li>Impressum</li>
+            <li>AGB</li>
+            <li>Datenschutz</li>
+        </ul>
+    </footer>
+</body>
+</html>
