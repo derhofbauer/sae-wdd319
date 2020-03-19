@@ -2,8 +2,17 @@
 require_once 'partials/header.php';
 ?>
 
-        <h1>Home</h1>
-        Some content
+<?php
+
+$page = $_GET['page']
+
+if ($page === 'contact') {
+    require_once 'content/contact.php';
+} else {
+    require_once 'content/home.php';
+}
+
+?>
 
 <?php
 require_once 'partials/footer.php';
