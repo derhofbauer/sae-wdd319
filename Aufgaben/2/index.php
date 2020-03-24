@@ -32,6 +32,10 @@
             <input type="email" name="email" id="email" placeholder="Email" class="form-control">
         </div>
         <div class="form-group">
+            <label for="phone">Telefon</label>
+            <input type="text" name="phone" id="phone" placeholder="+43 ..." class="form-control">
+        </div>
+        <div class="form-group">
             <label for="salutation">Anrede</label>
             <?php
 
