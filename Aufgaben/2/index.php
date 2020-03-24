@@ -8,14 +8,14 @@
 </head>
 <body>
 
-<form action="handle.php" class="sample-form" method="post">
+<form action="validate.php" class="sample-form" method="post">
     <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" name="name" placeholder="Name" class="form-control">
+        <input type="text" name="name" id="name" placeholder="Name" class="form-control">
     </div>
     <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" name="email" placeholder="Email" class="form-control">
+        <input type="email" name="email" id="email" placeholder="Email" class="form-control">
     </div>
     <div class="form-group">
         <label for="salutation">Anrede</label>
@@ -31,7 +31,6 @@
             'o' => 'Non-Binary', // o other
             'c' => 'Firma' // c company
         ];
-
 
         /**
          * Schleifen und If/Else Konstrukte können in PHP statt mit {} auch mit : und endforeach begonnen und beendet
@@ -51,11 +50,39 @@
         <?php
 
         // _default, Weiblich, Männlich, LGBTQ, other (no offense)
+        $options = [
+            '_default' => 'Bitte auswählen ...',
+            'f' => 'Weiblich', // f female
+            'm' => 'Männlich', // m male
+            'nb' => 'LGBTQ', // nb non-binary
+            'o' => 'Other' // o other
+        ];
 
         ?>
-        <select name="" id="">
-            <option value=""></option>
+        <select name="gender" id="gender">
+            <?php
+            foreach ($options as $htmlValue => $label) {
+                if ($htmlValue === '_default') {
+                    echo '<option value="' . $htmlValue . '" selected hidden>' . $label . '</option>';
+                } else {
+                    echo '<option value="' . $htmlValue . '">' . $label . '</option>';
+                    // echo "<option value=\"$htmlValue\">$label</option>";
+                }
+            }
+            ?>
         </select>
+    </div>
+    <div class="form-group">
+        <label for="message">Nachricht</label>
+        <textarea name="message" id="message" cols="30" rows="10" placeholder="Message"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="newsletter">
+            <input type="checkbox" name="newsletter" id="newsletter"> Newsletter abonnieren?
+        </label>
+    </div>
+    <div class="form-group">
+        <button type="submit" value="do-submit">Submit</button>
     </div>
 </form>
 
