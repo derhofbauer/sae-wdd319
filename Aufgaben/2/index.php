@@ -21,13 +21,23 @@
         <label for="salutation">Anrede</label>
         <?php
 
+        /**
+         * An dieser Stelle definieren wir uns die HTML Values und den Label Text für die Radiobuttons. Der Array Key
+         * ist der HTML Value und der Array Value ist der HTML Label Text.
+         */
         $options = [
-            'f' => 'Frau',
-            'm' => 'Herr',
-            'o' => 'Non-Binary',
-            'c' => 'Firma'
+            'f' => 'Frau', // f female
+            'm' => 'Herr', // m male
+            'o' => 'Non-Binary', // o other
+            'c' => 'Firma' // c company
         ];
 
+
+        /**
+         * Schleifen und If/Else Konstrukte können in PHP statt mit {} auch mit : und endforeach begonnen und beendet
+         * werden. Dabei wird ein HTML Block als Schleifenkörper verwendet. Innerhalb dieses Blocks kann mit PHP auf
+         * die Variablen der Schleife zugegriffen werden.
+         */
         foreach ($options as $htmlValue => $label): ?>
             <p>
                 <label>
