@@ -69,3 +69,28 @@ extract($row);
 ### Misc
 
 + Manche Verzeichnisse in diesem Repository werden ein `.gitkeep` file beinhalten und sonst nichts. Das liegt daran, dass GIT leere Verzeichnisse nicht versioniert, ich möchte euch aber unter Umständen schon ein paar Ordner vorbereiten, in die später einmal etwas rein kommen wird.
+
+
+### Virtual Hosts / vhosts
+
+Normalerweise sind Dateien im Apache Webserver nur über den Pfad erreichbar:
+
+```
+localhost/datei.php --> /var/www/html/datei.php
+domain.tld/datei.php --> /var/www/html/datei.php
+
+localhost/php/index.php --> /var/www/html/php/index.php
+localhost/mvc/index.php --> /var/www/html/mvc/index.php
+localhost/project3/index.php --> /var/www/html/project3/index.php
+```
+
+Sollen Dateien über eine Subdomain erreichbar sein, müssen virtuelle Hosts konfiguriert werden:
+
+```
+php.localhost/index.php --> /var/www/html/php/index.php
+mvc.localhost/index.php --> /var/www/html/mvc/index.php
+project3.localhost/index.php --> /var/www/html/project3/index.php
+
+localhost/php_workspace/Aufgabe/1/index.php --> /Application/MAMP/htdocs/php_workspace/Aufgabe/1/index.php
+php_workspace.localhost/Aufgabe/1/index.php --> /Application/MAMP/htdocs/php_workspace/Aufgabe/1/index.php
+```
