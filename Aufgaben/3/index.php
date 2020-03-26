@@ -22,16 +22,26 @@ var_dump($_SESSION);
 </head>
 <body>
 <ul>
-    <?php foreach ($links as $link): ?>
-    <li>
-        <a href="redirect.php?url=<?php echo urlencode($link); ?>" target="_blank"><?php echo $link; ?></a>
-        <?php
-        if (isset($_SESSION['url-tracker'][$link]) && $_SESSION['url-tracker'][$link] === true) {
-            echo "(besucht)";
-        }
-        ?>
-    </li>
-    <?php endforeach;?>
+    <?php
+        /**
+         * Wir generieren eine Liste dynamisch aus dem Array $links, dadurch ist sie ganz einfach erweiterbar
+         */
+        foreach ($links as $link):
+    ?>
+        <li>
+            <a href="redirect.php?url=<?php echo urlencode($link); ?>" target="_blank"><?php echo $link; ?></a>
+            <?php
+            /**
+             * Wenn der Link, der aktuell gerendert wird, bereits in der Session steht und somit schon einmal geklickt
+             * wurde, hängen wir hier einen Zusatz dran.
+             */
+            if (isset($_SESSION['url-counter'][$link])) {
+                $count = $_SESSION['url-counter'][$link];
+                echo "({$count}x besucht)";
+            }
+            ?>
+        </li>
+    <?php endforeach; ?>
 </ul>
 </body>
 </html>
