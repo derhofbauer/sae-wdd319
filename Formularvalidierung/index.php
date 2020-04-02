@@ -25,37 +25,48 @@ if (isset($_POST['do-submit'])) {
         <div class="form-check">
             <input class="form-check-input" type="radio" name="salutation" id="salutation_1" value="f">
             <label class="form-check-label" for="salutation_1">
-                Frau
+                Frau *
             </label>
         </div>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="salutation" id="salutation_2" value="m">
             <label class="form-check-label" for="salutation_2">
-                Herr
+                Herr *
             </label>
         </div>
         <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Name *</label>
             <input type="text" class="form-control" name="name">
         </div>
         <div class="form-group">
-            <label for="email">E-Mail</label>
+            <label for="email">E-Mail *</label>
             <input type="text" class="form-control" name="email">
         </div>
         <div class="form-group">
-            <label for="birthday">Geburtstag (DD.MM.YYYY)</label>
+            <label for="birthday">Geburtstag (DD.MM.YYYY) *</label>
             <input type="text" class="form-control" name="birthday">
         </div>
         <div class="form-group">
-            <label for="creditcard">Kreditkartennummer</label>
+            <label for="creditcard">Kreditkartennummer *</label>
             <input type="text" class="form-control" name="creditcard">
         </div>
         <div class="form-group">
-            <label for="country">Land</label>
+            <label for="country">Land *</label>
             <select name="country" id="country" class="form-control">
+                <option value="_default" selected hidden>Bitte auswählen ...</option>
                 <?php
 
                 // dynamisch generiertes Dropdown (Bitte auswählen..., Österreich, Deutschland, Schweiz, Liechtenstein)
+                $options = [
+                    'AT' => 'Österreich',
+                    'S' => 'Schweiz',
+                    'D' => 'Deutschland',
+                    'L' => 'Liechtenstein'
+                ];
+
+                foreach ($options as $value => $label) {
+                    echo "<option value=\"${value}\">${label}</option>";
+                }
 
                 ?>
             </select>
@@ -63,7 +74,7 @@ if (isset($_POST['do-submit'])) {
         <div class="form-check">
             <input type="checkbox" name="agb" id="agb" class="form-check-input">
             <label for="agb" class="form-check-label">
-                Ich habe die AGB gelesen, verstanden und akzeptiere diese.
+                Ich habe die AGB gelesen, verstanden und akzeptiere diese. *
             </label>
         </div>
 
