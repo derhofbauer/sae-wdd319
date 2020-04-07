@@ -16,6 +16,17 @@ if (isset($_POST['do-submit'])) {
     require_once 'validate.php';
 }
 
+/**
+ * @param string $key
+ * @param array  $errors
+ */
+function renderError (string $key, array $errors)
+{
+    if (isset($errors[$key])) {
+        echo "<p class=\"alert alert-warning\">" . $errors[$key] . ".</p >";
+    }
+}
+
 ?>
 
 <div class="container">
@@ -34,22 +45,27 @@ if (isset($_POST['do-submit'])) {
                 Herr *
             </label>
         </div>
+        <?php renderError('salutation', $errors); ?>
         <div class="form-group">
             <label for="name">Name *</label>
             <input type="text" class="form-control" name="name">
         </div>
+        <?php renderError('name', $errors); ?>
         <div class="form-group">
             <label for="email">E-Mail *</label>
             <input type="text" class="form-control" name="email">
         </div>
+        <?php renderError('email', $errors); ?>
         <div class="form-group">
             <label for="birthday">Geburtstag (DD.MM.YYYY) *</label>
             <input type="text" class="form-control" name="birthday">
         </div>
+        <?php renderError('birthday', $errors); ?>
         <div class="form-group">
-            <label for="creditcard">Kreditkartennummer *</label>
+            <label for="creditcard">Kreditkartennummer</label>
             <input type="text" class="form-control" name="creditcard">
         </div>
+        <?php renderError('creditcard', $errors); ?>
         <div class="form-group">
             <label for="country">Land *</label>
             <select name="country" id="country" class="form-control">
@@ -57,12 +73,8 @@ if (isset($_POST['do-submit'])) {
                 <?php
 
                 // dynamisch generiertes Dropdown (Bitte auswählen..., Österreich, Deutschland, Schweiz, Liechtenstein)
-                $options = [
-                    'AT' => 'Österreich',
-                    'S' => 'Schweiz',
-                    'D' => 'Deutschland',
-                    'L' => 'Liechtenstein'
-                ];
+
+                $options = require 'countries.php';
 
                 foreach ($options as $value => $label) {
                     echo "<option value=\"${value}\">${label}</option>";
@@ -71,12 +83,14 @@ if (isset($_POST['do-submit'])) {
                 ?>
             </select>
         </div>
+        <?php renderError('country', $errors); ?>
         <div class="form-check">
             <input type="checkbox" name="agb" id="agb" class="form-check-input">
             <label for="agb" class="form-check-label">
                 Ich habe die AGB gelesen, verstanden und akzeptiere diese. *
             </label>
         </div>
+        <?php renderError('agb', $errors); ?>
 
         <input type="submit" name="do-submit" value="Senden">
     </form>
