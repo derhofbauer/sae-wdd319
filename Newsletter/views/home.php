@@ -1,6 +1,6 @@
 <?php require_once __DIR__ . '/partials/header.php'; ?>
 
-<form action="home.php?page=subscribe" method="post">
+<form action="index.php?page=subscribe" method="post">
     <div class="form-group">
         <label for="email">Email address</label>
         <input type="email" class="form-control" id="email" name="email">
