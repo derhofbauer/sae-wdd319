@@ -29,6 +29,7 @@ Das MVC verwendet Composer. Wir haben die Bibliothek MPDF mittels Composer insta
 + https://learngitbranching.js.org/
 + Regular Expressions: https://regex101.com/
 + https://regexcrossword.com
++ Command Line Basics: https://levelup.gitconnected.com/console-commands-that-you-should-know-how-to-use-f2b24a455394
 
 ### Cheatsheets
 
