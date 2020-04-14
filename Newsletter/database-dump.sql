@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 08. Apr 2020 um 17:10
+-- Erstellungszeit: 14. Apr 2020 um 16:10
 -- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
 -- PHP-Version: 7.4.3
 
@@ -59,6 +59,15 @@ CREATE TABLE `topics` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `topics`
+--
+
+INSERT INTO `topics` (`id`, `name`, `description`) VALUES
+(1, 'Topic 1', 'Topic 1 Description'),
+(2, 'Topic 2', 'Topic 2 Description'),
+(3, 'Topic 3', NULL);
 
 -- --------------------------------------------------------
 
@@ -124,7 +133,7 @@ ALTER TABLE `subscribers_topics_mm`
 -- AUTO_INCREMENT für Tabelle `topics`
 --
 ALTER TABLE `topics`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT für Tabelle `users`
@@ -137,16 +146,11 @@ ALTER TABLE `users`
 --
 
 --
--- Constraints der Tabelle `subscribers`
+-- Constraints der Tabelle `subscribers_topics_mm`
 --
-ALTER TABLE `subscribers`
-  ADD CONSTRAINT `subscribers_topics_subscriber_id` FOREIGN KEY (`id`) REFERENCES `subscribers_topics_mm` (`subscriber_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
---
--- Constraints der Tabelle `topics`
---
-ALTER TABLE `topics`
-  ADD CONSTRAINT `subscribers_topics_topic_id` FOREIGN KEY (`id`) REFERENCES `subscribers_topics_mm` (`topic_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE `subscribers_topics_mm`
+  ADD CONSTRAINT `subscriber_id` FOREIGN KEY (`subscriber_id`) REFERENCES `subscribers` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `topic_id` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
