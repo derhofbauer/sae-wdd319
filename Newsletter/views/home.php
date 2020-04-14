@@ -17,12 +17,17 @@
         </div>
     </div>
 
-    <?php // Der folgende Block soll pro Topic aus der Datenbank generiert werden. ?>
-    <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="topic_1" name="topics[]" value="1">
-        <label class="form-check-label" for="topic_1">Topic Name</label>
-        <small class="form-text text-muted">Topic Description</small>
-    </div>
+    <?php foreach ($topics as $topic): ?>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="topics[<?php echo $topic['id']; ?>]" name="topics[<?php echo $topic['id']; ?>]">
+            <label class="form-check-label" for="topics[<?php echo $topic['id']; ?>]">
+                <?php echo $topic['name']; ?>
+            </label>
+            <?php if (!empty($topic['description'])): ?>
+                <small class="form-text text-muted"><?php echo $topic['description']; ?></small>
+            <?php endif; ?>
+        </div>
+    <?php endforeach; ?>
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
