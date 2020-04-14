@@ -82,4 +82,4 @@ if (empty($errors)) {
     }
 }
 
-var_dump($errors);
+require_once __DIR__ . '/../views/success.php';
