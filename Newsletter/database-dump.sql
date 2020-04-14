@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 14. Apr 2020 um 16:10
+-- Erstellungszeit: 14. Apr 2020 um 16:14
 -- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
 -- PHP-Version: 7.4.3
 
@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 -- Tabellenstruktur für Tabelle `subscribers`
 --
 
+DROP TABLE IF EXISTS `subscribers`;
 CREATE TABLE `subscribers` (
   `id` int(11) NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -42,6 +43,7 @@ CREATE TABLE `subscribers` (
 -- Tabellenstruktur für Tabelle `subscribers_topics_mm`
 --
 
+DROP TABLE IF EXISTS `subscribers_topics_mm`;
 CREATE TABLE `subscribers_topics_mm` (
   `id` int(11) NOT NULL,
   `subscriber_id` int(11) NOT NULL,
@@ -54,6 +56,7 @@ CREATE TABLE `subscribers_topics_mm` (
 -- Tabellenstruktur für Tabelle `topics`
 --
 
+DROP TABLE IF EXISTS `topics`;
 CREATE TABLE `topics` (
   `id` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -75,6 +78,7 @@ INSERT INTO `topics` (`id`, `name`, `description`) VALUES
 -- Tabellenstruktur für Tabelle `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
