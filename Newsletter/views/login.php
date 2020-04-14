@@ -1,11 +1,17 @@
 <?php require_once __DIR__ . '/partials/header.php'; ?>
 
-
 <div class="card col-6">
     <article class="card-body">
         <h4 class="card-title text-center mb-4 mt-1">Sign in</h4>
         <hr>
-<!--        <p class="text-success text-center">Some message goes here</p>-->
+        <?php
+        /**
+         * $errors wurde in includes/login.php definiert und dieses File wird im selben Scope wie $errors eingebunden,
+         * wodurch $errors hier verfügbar ist.
+         */
+        foreach($errors as $error): ?>
+            <p class="text-danger text-center"><?php echo $error; ?></p>
+        <?php endforeach; ?>
         <form action="index.php?page=login" method="post">
             <div class="form-group">
                 <div class="input-group">

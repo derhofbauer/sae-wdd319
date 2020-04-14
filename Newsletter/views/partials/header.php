@@ -23,6 +23,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="index.php?page=login">Login</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="index.php?page=logout">Logout</a>
+            </li>
         </ul>
     </div>
 </nav>

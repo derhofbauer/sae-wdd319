@@ -27,8 +27,10 @@
  *   + id INT,PK,A_I
  *   + subscriber_id INT
  *   + topic_id INT
+
  */
 
+require_once 'includes/session.php';
 require_once 'includes/database.php';
 
 if (isset($_GET['page'])) {
