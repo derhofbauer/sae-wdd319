@@ -7,6 +7,7 @@
             <?php foreach ($subscribers as $subscriber): ?>
                 <li class="list-group-item">
                     <h5><?php echo $subscriber['email']; ?></h5>
+                    <span class="badge badge-primary badge-pill"><?php echo $subscriber['numberofsubscriptions']; ?></span>
                     <?php if (!empty($subscriber['firstname']) && !empty($subscriber['lastname'])): ?>
                         <small><?php echo $subscriber['firstname'] . ' ' . $subscriber['lastname']; ?></small>
                     <?php endif; ?>
