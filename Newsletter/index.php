@@ -33,6 +33,7 @@
 /**
  * Files, die immer gebraucht werden
  */
+require_once 'includes/function.php';
 require_once 'includes/session.php';
 require_once 'includes/database.php';
 
