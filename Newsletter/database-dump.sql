@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 14. Apr 2020 um 16:14
+-- Erstellungszeit: 16. Apr 2020 um 17:43
 -- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
 -- PHP-Version: 7.4.3
 
@@ -37,6 +37,14 @@ CREATE TABLE `subscribers` (
   `muted` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Daten für Tabelle `subscribers`
+--
+
+INSERT INTO `subscribers` (`id`, `email`, `firstname`, `lastname`, `muted`) VALUES
+(10, 'hofbauer.alexander@gmail.com', 'Alexander', 'Hofbauer', NULL),
+(11, 'arthur.dent@galaxy.com', NULL, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -49,6 +57,15 @@ CREATE TABLE `subscribers_topics_mm` (
   `subscriber_id` int(11) NOT NULL,
   `topic_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `subscribers_topics_mm`
+--
+
+INSERT INTO `subscribers_topics_mm` (`id`, `subscriber_id`, `topic_id`) VALUES
+(7, 10, 2),
+(8, 10, 3),
+(9, 11, 1);
 
 -- --------------------------------------------------------
 
@@ -84,6 +101,13 @@ CREATE TABLE `users` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Daten für Tabelle `users`
+--
+
+INSERT INTO `users` (`id`, `email`, `password`) VALUES
+(1, 'arthur.dent@galaxy.com', '$2y$12$OGHFyvBCtXl5fK6mnbo9Z.GHDSSnrSVcdfsnuSRdqOy5AE0TLRggK');
 
 --
 -- Indizes der exportierten Tabellen
@@ -137,7 +161,7 @@ ALTER TABLE `subscribers_topics_mm`
 -- AUTO_INCREMENT für Tabelle `topics`
 --
 ALTER TABLE `topics`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `users`
