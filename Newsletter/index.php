@@ -30,9 +30,15 @@
 
  */
 
+/**
+ * Files, die immer gebraucht werden
+ */
 require_once 'includes/session.php';
 require_once 'includes/database.php';
 
+/**
+ * In der URL angefragtes File dynamisch einbinden
+ */
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
 } else {

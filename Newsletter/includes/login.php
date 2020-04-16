@@ -16,7 +16,7 @@ if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
         /**
          * Abfragen aller User mit der eingegeben Email-Adresse aus der Datenbank
          */
-        $query = sprintf("SELECT * FROM users WHERE email = '%s'", $_POST['email']);
+        $query = sprintf("SELECT * FROM users WHERE email = '%s'", $_POST['email']); // "SELECT * FROM users WHERE email = 'arthur.dent@galaxy.com'"
         $result = mysqli_query($link, $query);
 
         /**
@@ -44,9 +44,11 @@ if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
                 $_SESSION['loggedIn'] = true;
 
                 /**
-                 * Hier würden wir zum Admin-Dashboard weiterleiten.
+                 * Hier leiten wir zum Admin-Dashboard weiter.
                  */
-                echo "would redirect";
+                header('Location: index.php?page=dashboard');
+                exit;
+
             } else {
                 /**
                  * Wir geben den selben Fehler zurück, obwohl wir unterschiedliche Fehlerfälle haben, damit wir einem
@@ -65,13 +67,15 @@ if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
         if (!empty($errors)) {
             require_once __DIR__ . '/../views/login.php';
         }
+
     } else {
         require_once __DIR__ . '/../views/login.php';
     }
 } else {
     /**
-     * Hier würden wir zum Admin-Dashboard weiterleiten, weil der User bereits eingeloggt war und trotzdem das Login
+     * Hier leiten wir zum Admin-Dashboard weiter, weil der User bereits eingeloggt war und trotzdem das Login
      * Formular aufgerufen hat.
      */
-    echo "would redirect";
+    header('Location: index.php?page=dashboard');
+    exit;
 }
