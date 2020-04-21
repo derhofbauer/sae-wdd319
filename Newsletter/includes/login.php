@@ -39,7 +39,7 @@ if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true) {
                 /**
                  * Session setzen, damit wir persistent vermerkt haben, dass ein User eingeloggt ist.
                  *
-                 * Beim Logout würden wir $_SESSION['loggedIn'] auf false setzen oder den Key löschen.
+                 * Beim Logout werden wir $_SESSION['loggedIn'] auf false setzen oder den Key 'loggedIn' löschen.
                  */
                 $_SESSION['loggedIn'] = true;
 
