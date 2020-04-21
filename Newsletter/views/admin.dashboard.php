@@ -3,7 +3,7 @@
 <div class="row">
     <?php if (isset($topics)): ?>
         <div class="col">
-            <h2>Topics</h2>
+            <h2>Topics <small><a href="index.php?page=new-topic">New</a></small></h2>
             <div class="list-group">
                 <?php foreach ($topics as $topic): ?>
                     <a href="index.php?page=edit-topic&id=<?php echo $topic['id']; ?>" class="list-group-item list-group-item-action">
