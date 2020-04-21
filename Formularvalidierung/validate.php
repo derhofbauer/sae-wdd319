@@ -10,8 +10,15 @@ if (isset($_POST['do-submit'])) {
 
     if (
         !isset($_POST['salutation']) ||
-        $_POST['salutation'] !== 'f' ||
-        $_POST['salutation'] !== 'm'
+        !in_array($_POST['salutation'], ['f', 'm'])
+        /**
+         * mit in_array können wir uns die folgenden Abfrage sparen und einfacher erweitern:
+         *
+         * (
+         *   $_POST['salutation'] !== 'f' &&
+         *   $_POST['salutation'] !== 'm'
+         * )
+         */
     ) {
         $errors['salutation'] = "Bitte wählen Sie eine Andrede aus";
     }

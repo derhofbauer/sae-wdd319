@@ -14,6 +14,12 @@
 
 if (isset($_POST['do-submit'])) {
     require_once 'validate.php';
+} else {
+    /**
+     * Keine sehr hübsche Lösung, aber es löst das Problem, dass beim Aufrug von renderError() ein Fatal Error geworfen
+     * wird, weil $errors nicht existiert.
+     */
+    $errors = [];
 }
 
 /**
@@ -27,6 +33,27 @@ function renderError (string $key, array $errors)
     }
 }
 
+/**
+ * @param string $key
+ */
+function oldValue (string $key)
+{
+    if (isset($_POST[$key])) {
+        echo $_POST[$key];
+    }
+}
+
+/**
+ * @param string $key
+ * @param string $value
+ */
+function oldValueRadio (string $key, string $value)
+{
+    if (isset($_POST[$key]) && $_POST[$key] === $value) {
+        echo "checked";
+    }
+}
+
 ?>
 
 <div class="container">
@@ -34,13 +61,13 @@ function renderError (string $key, array $errors)
 
     <form action="index.php" method="post">
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="salutation" id="salutation_1" value="f">
+            <input class="form-check-input" type="radio" name="salutation" id="salutation_1" value="f" <?php oldValueRadio('salutation', 'f'); ?>>
             <label class="form-check-label" for="salutation_1">
                 Frau *
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="salutation" id="salutation_2" value="m">
+            <input class="form-check-input" type="radio" name="salutation" id="salutation_2" value="m" <?php oldValueRadio('salutation', 'm'); ?>>
             <label class="form-check-label" for="salutation_2">
                 Herr *
             </label>
@@ -48,36 +75,49 @@ function renderError (string $key, array $errors)
         <?php renderError('salutation', $errors); ?>
         <div class="form-group">
             <label for="name">Name *</label>
-            <input type="text" class="form-control" name="name">
+            <input type="text" class="form-control" name="name" value="<?php oldValue('name'); ?>">
         </div>
         <?php renderError('name', $errors); ?>
         <div class="form-group">
             <label for="email">E-Mail *</label>
-            <input type="text" class="form-control" name="email">
+            <input type="text" class="form-control" name="email" value="<?php oldValue('email'); ?>">
         </div>
         <?php renderError('email', $errors); ?>
         <div class="form-group">
             <label for="birthday">Geburtstag (DD.MM.YYYY) *</label>
-            <input type="text" class="form-control" name="birthday">
+            <input type="text" class="form-control" name="birthday" value="<?php oldValue('birthday'); ?>">
         </div>
         <?php renderError('birthday', $errors); ?>
         <div class="form-group">
             <label for="creditcard">Kreditkartennummer</label>
-            <input type="text" class="form-control" name="creditcard">
+            <input type="text" class="form-control" name="creditcard" value="<?php oldValue('creditcard'); ?>">
         </div>
         <?php renderError('creditcard', $errors); ?>
         <div class="form-group">
             <label for="country">Land *</label>
             <select name="country" id="country" class="form-control">
-                <option value="_default" selected hidden>Bitte auswählen ...</option>
                 <?php
 
                 // dynamisch generiertes Dropdown (Bitte auswählen..., Österreich, Deutschland, Schweiz, Liechtenstein)
 
                 $options = require 'countries.php';
+                $options['_default'] = 'Bitte auswählen ...';
+
+                $selected = '_default';
+                if (isset($_POST['country'])) {
+                    $selected = $_POST['country'];
+                }
 
                 foreach ($options as $value => $label) {
-                    echo "<option value=\"${value}\">${label}</option>";
+
+                    $selectedParticle = ($selected === $value ? ' selected' : '');
+
+                    if ($value === '_default') {
+                        echo "<option value=\"${value}\" hidden${selectedParticle}>${label}</option>";
+                    } else {
+                        echo "<option value=\"${value}\"${selectedParticle}>${label}</option>";
+                    }
+                    
                 }
 
                 ?>
