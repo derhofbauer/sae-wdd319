@@ -3,12 +3,18 @@
 <h2>Edit Topic</h2>
 
 <?php foreach ($errors as $error): ?>
-    <p class="text-danger text-center"><?php echo $error; ?></p>
+    <p class="alert alert-danger"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
 <form action="index.php?page=edit-topic&id=<?php echo $_GET['id']; ?>" method="post">
     <div class="form-group">
         <label for="name">Name</label>
+        <?php
+        /**
+         * Wir können hier $name anstelle von $resultData['name'] verwenden, weil wir im includes/edit-topic.php die
+         * extract Funktion verwendet haben. Selbiges gilt auch für $description im nächsten Formularfeld.
+         */
+        ?>
         <input type="text" class="form-control" id="name" name="name" value="<?php echo $name; ?>">
     </div>
     <div class="row">
