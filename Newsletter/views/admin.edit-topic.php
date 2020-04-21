@@ -26,6 +26,7 @@
 
     <button type="submit" class="btn btn-primary">Submit</button>
     <a href="index.php?page=dashboard" class="btn btn-danger">Cancel</a>
+    <a href="index.php?page=delete-topic&id=<?php echo $id; ?>" class="btn btn-danger">DELETE?</a>
 </form>
 
 <?php require_once __DIR__ . '/partials/footer.php'; ?>
