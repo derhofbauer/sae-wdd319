@@ -4,9 +4,9 @@
 
 + [ ] Routing: `localhost:8080/mvc/shop/products/{id}` => `localhost:8080/mvc/shop/products/42` => `localhost:8080/mvc/index.php?path=/shop/products/42`
 + [ ] Database Abstraction
-+ [ ] Middlewares
 + [ ] Templating
 + [ ] Emailing
++ [ ] Middlewares
 + [ ] Validators
 
 ## Folders
