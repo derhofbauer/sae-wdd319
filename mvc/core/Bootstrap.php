@@ -9,10 +9,11 @@ class Bootstrap
     public function __construct ()
     {
         /**
-         * [ ] Routing starten
+         * [x] Routing starten
          * [x] Session starten
+         * [x] Datenbankverbindung herstellen
          */
-        Session::init();
+        \Core\Session::init();
 
         $this->routes = $this->getPreparedRoutes();
         $this->getControllerAndAction();
@@ -33,8 +34,9 @@ class Bootstrap
         /**
          * $_GET['path'] so umformen, dass immer ein führendes Slash dran steht unten am Ende keines.
          */
+        $path = '';
         if (isset($_GET['path'])) {
-            $path = $path . $_GET['path'];
+            $path = $_GET['path'];
         }
         /**
          * `rtrim()` entfernt eine Liste an Zeichen vom Ende eines Strings.
@@ -68,6 +70,7 @@ class Bootstrap
              */
             $controller = explode('.', $controllerAndAction)[0];
             $action = explode('.', $controllerAndAction)[1];
+
         } else {
 
             /**
@@ -131,7 +134,7 @@ class Bootstrap
                          *
                          * s. https://www.php.net/manual/en/function.array-map.php
                          */
-                        $params = array_map(function ($item) {
+                        $params = array_map(function ($captureGroupMatch) {
                             /**
                              * `preg_match_all()` erzeugt ein sehr seltsames mehrdimensionales Array, wir wollen aber
                              * immer nur ein bestimmes Element in der zweiten Ebene des Arrays.
@@ -139,7 +142,7 @@ class Bootstrap
                              * Das Array wird mehrdimensdional definiert, weil potenziell mehrer Strings gleichzeitig
                              * geprüft werden können.
                              */
-                            return $item[0];
+                            return $captureGroupMatch[0];
                         }, $matches);
 
                         /**
@@ -165,7 +168,7 @@ class Bootstrap
              * Wenn oben ein Controller gefunden wurde, dann erstellen wir nun den vollständigen Namen der Klasse mit
              * dem Namespace.
              */
-            $classAndNamespace = "App\Controllers\{$controller}";
+            $classAndNamespace = "App\\Controllers\\$controller";
 
             /**
              * Instanzieren (erzeugen) eines Controller Objects
@@ -173,7 +176,9 @@ class Bootstrap
             $controller = new $classAndNamespace();
 
             /**
-             * Aufrufen der Methode $action aus dem Objekt $controller mit den Funktionsparametern $params
+             * Aufrufen der Methode $action aus dem Objekt $controller mit den Funktionsparametern $params.
+             * Wir verwenden call_user_func_array, weil die Methode $action mit einer dynamischen Anzahl an Parametern
+             * aufrufen müssen.
              *
              * s. https://www.php.net/manual/en/function.call-user-func-array.php
              */
