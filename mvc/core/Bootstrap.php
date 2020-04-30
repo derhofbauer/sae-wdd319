@@ -31,17 +31,17 @@ class Bootstrap
     private function getControllerAndAction ()
     {
         /**
-         * $_GET['path'] so umformen, dass immer ein führendes Slash dran steht unten am Ende keines.  Wenn kein Pfad
-         * übergeben wurde, ist unsere Standarroute "/".
+         * $_GET['path'] so umformen, dass immer ein führendes Slash dran steht unten am Ende keines.
          */
-        $path = '/';
         if (isset($_GET['path'])) {
             $path = $path . $_GET['path'];
         }
         /**
          * `rtrim()` entfernt eine Liste an Zeichen vom Ende eines Strings.
+         *
+         * Wenn kein Pfad übergeben wurde, ist unsere Standarroute "/"
          */
-        $path = rtrim($path, '/');
+        $path = "/" . rtrim($path, '/');
 
         /**
          * Variablen initialisieren, damit wir sie später befüllen können
