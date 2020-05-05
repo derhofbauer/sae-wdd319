@@ -14,8 +14,9 @@ class View
      *
      * @param string $view
      * @param array  $params
+     * @param string $layout
      */
-    public static function load (string $view, array $params = [])
+    public static function load (string $view, array $params = [], string $layout = 'main')
     {
         /**
          * extract() erstellt aus jedem Wert in einem Array eine eigene Variable. Das brauchen wir aber nur zu tun, wenn
@@ -26,9 +27,14 @@ class View
         }
 
         /**
+         * View Path vorbereiten, damit im Layout file der View geladen werden kann
+         */
+        $viewPath = __DIR__ . "/../resources/views/$view.view.php";
+
+        /**
          * Hier laden wir das View-File anhand des $view Funktionsparameters.
          */
-        require_once __DIR__ . "/../resources/views/$view.view.php";
+        require_once __DIR__ . "/../resources/views/layouts/$layout.php";
     }
 
 }

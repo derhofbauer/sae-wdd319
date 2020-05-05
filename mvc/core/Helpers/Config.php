@@ -20,7 +20,7 @@ class Config
             /**
              * Config file dynamisch laden
              */
-            $config = require_once __DIR__ . "/../../config/$filename.php";
+            $config = require __DIR__ . "/../../config/$filename.php";
 
             if (array_key_exists($key, $config)) {
                 return $config[$key];
