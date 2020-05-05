@@ -1,11 +1,14 @@
 <?php
 
 return [
-    // '/' => HomeController.php => HomeController::index()
-    '/' => 'HomeController.index',
-    '/products' => 'ProductController.list',
+    /**
+     * Home Route
+     */
+    '/' => 'ProductController.list',
 
-    // ProductController.php => ProductController::showProduct($id)
-    '/products/{id}' => 'ProductController.showProduct',
-    '/products/{id}/something/{else}' => 'ProductController.somethingElse',
+    /**
+     * Product Routes
+     */
+    '/products' => 'ProductController.list',
+    '/products/{id}' => 'ProductController.showProduct', // ProductController.php => ProductController::showProduct($id)
 ];
