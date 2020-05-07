@@ -19,19 +19,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="index.php?page=home">Home</a>
+                <a class="nav-link" href="home">Home</a>
             </li>
-            <?php if (!isset($_SESSION['loggedIn']) || $_SESSION['loggedIn'] !== true): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="index.php?page=login">Login</a>
-            </li>
+            <?php if (\App\Models\User::isLoggedIn()): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout">Logout</a>
+                </li>
             <?php else: ?>
-            <li class="nav-item">
-                <a class="nav-link" href="index.php?page=dashboard">Dashboard</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index.php?page=logout">Logout</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login">Login</a>
+                </li>
             <?php endif; ?>
         </ul>
     </div>

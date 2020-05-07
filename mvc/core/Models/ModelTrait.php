@@ -15,7 +15,6 @@ use Core\Database;
  */
 trait ModelTrait
 {
-
     /**
      * Der Konstruktor bietet uns die Möglichkeit ein Objekt direkt bei der Erstellung zu befüllen.
      *

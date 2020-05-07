@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Core\Helpers\Config;
+
 class Bootstrap
 {
     private $routes = [];
@@ -164,6 +166,12 @@ class Bootstrap
         if ($controller === '') {
             exit('404 Seite - @todo: hübsche 404 Seite bauen ;)');
         } else {
+
+            /**
+             * Define Global Constants
+             */
+            define('BASE_URL', Config::get('app.baseUrl'));
+
             /**
              * Wenn oben ein Controller gefunden wurde, dann erstellen wir nun den vollständigen Namen der Klasse mit
              * dem Namespace.
