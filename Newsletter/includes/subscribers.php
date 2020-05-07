@@ -20,7 +20,18 @@ $result = mysqli_query($link, $query);
 $subscribers = [];
 
 while ($row = mysqli_fetch_assoc($result)) {
+    // SQL Query
+    $subscriberId = $row['id'];
+    $query = 'SELECT * FROM topics JOIN subscribers_topics_mm
+	ON topics.id = subscribers_topics_mm.topic_id
+    WHERE subscribers_topics_mm.subscriber_id = ' . $subscriberId;
+    $res = mysqli_query($link, $query);
+
+    $row['topics'] = mysqli_fetch_all($res, MYSQLI_ASSOC);
+
     $subscribers[] = $row;
 }
+
+var_dump($subscribers);
 
 require_once __DIR__ . '/../views/admin.subscribers.php';
