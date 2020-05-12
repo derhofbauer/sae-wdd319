@@ -21,6 +21,12 @@ class Database
             Config::get('database.dbname'),
             Config::get('database.port', 3306)
         );
+
+        /**
+         * Charset für dei Daten setzen. Umlaute und sprachspezifische Sonderzeichen werden so relativ problemlos
+         * gespeichert und übertragen.
+         */
+        $this->link->set_charset('utf8');
     }
 
     public function __destruct ()

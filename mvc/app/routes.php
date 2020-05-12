@@ -19,7 +19,8 @@ return [
      */
     '/dashboard' => 'AdminController.dashboard',
     '/products/{id}/edit' => 'AdminProductController.edit',
-    '/orders/{id}/edit' => 'AdminOrderController.edit',
+    '/orders/{id}/edit' => 'AdminOrderController.editForm',
+    '/orders/{id}/do-edit' => 'AdminOrderController.edit',
 
     /**
      * Product Routes (Frontend)

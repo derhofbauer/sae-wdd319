@@ -33,7 +33,7 @@ class AdminController
          * [x] Wie viel User?
          * [x] Liste der Produkte
          * [x] Bestellungsstatisik (offen, in progress, shipped, ...)
-         * [ ] @todo: Liste offener Bestellungen
+         * [x] Liste offener Bestellungen
          */
 
         /**
@@ -49,8 +49,12 @@ class AdminController
          * Sortierung sollte eigentlich über den Datenbank Query abgerufen werden, weil es wesentlich performanter ist
          * bei großen Datenmengen.
          *
+         * Die usort Funktion wird von PHP Mitgeliefert und bietet die Möglichkeit ein Array anhand einer benutzer-
+         * definierten Callback Funktion zu sortieren. Diese Callback Funktion muss 0 zurück geben, wenn die beiden
+         * verglichenen Werte $a und $b nicht in ihrer Reihenfolge verändert werden müssen, -1, wenn $a vor $b kommen
+         * soll und 1 wenn $a nach $b kommen soll. Siehe dazu auch die offizielle Dokumentation:
+         *
          * https://www.php.net/manual/en/function.usort.php
-         * @todo: Funktion durchkommentieren
          */
         usort($products, function ($a, $b) {
             if ($a->stock === $b->stock) {
@@ -74,6 +78,9 @@ class AdminController
          */
         $openOrders = Order::findByStatus('open');
 
+        /**
+         * Daten an View übergeben
+         */
         View::load('admin/dashboard', [
             'numberOfUsers' => $numberOfUsers,
             'products' => $products,
