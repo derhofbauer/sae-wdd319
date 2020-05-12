@@ -18,9 +18,11 @@ return [
      * Backend Routes
      */
     '/dashboard' => 'AdminController.dashboard',
+    '/products/{id}/edit' => 'AdminProductController.edit',
+    '/orders/{id}/edit' => 'AdminOrderController.edit',
 
     /**
-     * Product Routes
+     * Product Routes (Frontend)
      */
     '/products' => 'ProductController.list',
     '/products/{id}' => 'ProductController.showProduct', // ProductController.php => ProductController::showProduct($id)

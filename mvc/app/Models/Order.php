@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Core\Database;
 use Core\Models\ModelTrait;
 
-class Product
+class Order
 {
     /**
      * Wir verwenden ein paar grundlegende Methoden aus dem MVC Core, die jedes Model brauchen kann, aber nicht
@@ -18,18 +19,20 @@ class Product
      *
      * @var string
      */
-    public static $tableName = 'products';
+    public static $tableName = 'orders';
 
     /**
      * Wir definieren alle Spalten aus der Tabelle. Hier initialisieren wir die Variablen auch mit den entsprechenden
      * Datentypen, das ist aber nicht nötig.
      */
     public $id = 0;
-    public $name = '';
-    public $description = null;
-    public $price = 0.0;
-    public $stock = 0;
-    public $images = [];
+    public $crdate = 0;
+    public $user_id = 0;
+    public $products = '';
+    public $delivery_address_id = 0;
+    public $invoice_address_id = 0;
+    public $payment_id = 0;
+    public $status = 'open';
 
     /**
      * Die fill-Methode soll uns helfen, alle Properties der Klasse möglichst einfach und schnell aus einem Datenbank-
@@ -40,11 +43,13 @@ class Product
     public function fill (array $data = [])
     {
         $this->id = $data['id'];
-        $this->name = $data['name'];
-        $this->description = $data['description'];
-        $this->price = $data['price'];
-        $this->stock = $data['stock'];
-        $this->images = $data['images'];
+        $this->crdate = $data['crdate'];
+        $this->user_id = $data['user_id'];
+        $this->products = $data['products'];
+        $this->delivery_address_id = $data['delivery_address_id'];
+        $this->invoice_address_id = $data['invoice_address_id'];
+        $this->payment_id = $data['payment_id'];
+        $this->status = $data['status'];
     }
 
     /**
@@ -57,12 +62,27 @@ class Product
     }
 
     /**
-     * Möglichkeit, den Preis direkt formatiert zurück zu bekommen
+     * Erklärungen s. ModelTrait::all()
      *
-     * @return string
+     * @param string $status
+     *
+     * @return array
      */
-    public function getPrice ()
+    public static function findByStatus (string $status = 'open')
     {
-        return sprintf('&euro; %.2f ,-', $this->price);
+        $db = new Database();
+        $tableName = self::$tableName;
+
+        $result = $db->query("SELECT * FROM $tableName WHERE status = ?", [
+            's:status' => $status
+        ]);
+
+        $data = [];
+        foreach ($result as $resultItem) {
+            $date = new self($resultItem);
+            $data[] = $date;
+        }
+
+        return $data;
     }
 }
