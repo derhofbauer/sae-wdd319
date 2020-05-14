@@ -85,4 +85,12 @@ class Order
 
         return $data;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProducts ()
+    {
+        return json_decode($this->products);
+    }
 }

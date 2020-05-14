@@ -63,6 +63,16 @@ class Product
      */
     public function getPrice ()
     {
-        return sprintf('&euro; %.2f ,-', $this->price);
+        return self::formatPrice($this->price);
+    }
+
+    /**
+     * @param $price
+     *
+     * @return string
+     */
+    public static function formatPrice ($price)
+    {
+        return sprintf('&euro; %.2f ,-', $price);
     }
 }
