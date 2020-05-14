@@ -18,7 +18,9 @@ return [
      * Backend Routes
      */
     '/dashboard' => 'AdminController.dashboard',
-    '/products/{id}/edit' => 'AdminProductController.edit',
+    '/products/{id}/edit' => 'AdminProductController.editForm',
+    '/products/{id}/do-edit' => 'AdminProductController.edit',
+
     '/orders/{id}/edit' => 'AdminOrderController.editForm',
     '/orders/{id}/do-edit' => 'AdminOrderController.edit',
 

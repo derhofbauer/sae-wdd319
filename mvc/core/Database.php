@@ -132,4 +132,21 @@ class Database
         return $this->link;
     }
 
+    /**
+     * Gibt die von MySQL generierte ID aus dem letzten INSERT Query zurück. War der letzte Query kein INSERT Query,
+     * wird 0 zurück gegeben.
+     *
+     * s. https://www.php.net/mysqli.insert_id
+     *
+     * @return mixed
+     */
+    public function getInsertId ()
+    {
+        /**
+         * $this->link ist ein \mysqli Objekt und hat daher eine insert_id Property. $mysqli->insert_id beinhaltet also
+         * die ID, die bei einem INSERT Query von MySQL generiert wurde.
+         */
+        return $this->link->insert_id;
+    }
+
 }

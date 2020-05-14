@@ -2,7 +2,7 @@
 
 <div class="card">
     <div class="card-header">
-        Open Orders (<?php echo count($openOrders); ?>)
+        Orders: Open & In Progress (<?php echo count($openOrders); ?>)
     </div>
     <ul class="list-group list-group-flush">
         <?php foreach ($openOrders as $openOrder): ?>

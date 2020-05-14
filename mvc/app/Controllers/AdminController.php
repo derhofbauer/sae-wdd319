@@ -77,6 +77,8 @@ class AdminController
          * Liste offener Bestellungen
          */
         $openOrders = Order::findByStatus('open');
+        $inProgressOrders = Order::findByStatus('in progress');
+        $ordersToList = array_merge($openOrders, $inProgressOrders);
 
         /**
          * Daten an View übergeben
@@ -85,7 +87,7 @@ class AdminController
             'numberOfUsers' => $numberOfUsers,
             'products' => $products,
             'productStats' => $productStats,
-            'openOrders' => $openOrders
+            'openOrders' => $ordersToList
         ]);
     }
 

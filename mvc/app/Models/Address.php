@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Core\Database;
 use Core\Models\ModelTrait;
 
 class Address
@@ -47,6 +48,37 @@ class Address
      */
     public function save ()
     {
+        /**
+         * Neue Datenbankverbindung herstellen
+         */
+        $db = new Database();
 
+        /**
+         * Wenn die Adresse schon eine ID hat und somit in der Datenbank bereits existiert, dann aktualisieren wir es
+         * mit einem UPDATE Query, andernfalls legen wir mit einem INSERT Query eine neue Adresse an.
+         */
+        if ($this->id > 0) {
+            $result = $db->query('UPDATE ' . self::$tableName . ' SET user_id = ?, address = ? WHERE id = ?', [
+                'i:user_id' => $this->user_id,
+                's:address' => $this->address,
+                'i:id' => $this->id
+            ]);
+        } else {
+            $result = $db->query('INSERT INTO ' . self::$tableName . ' SET user_id = ?, address = ?', [
+                'i:user_id' => $this->user_id,
+                's:address' => $this->address
+            ]);
+            /**
+             * Bei einem INSERT Query wird von MySQL eine neue ID generiert (sofern eine AUTO_INCREMENT Spalte
+             * existiert). Diese ID lesen wir hier aus und setzen sie ins aktuelle Objekt.
+             */
+            $this->id = $db->getInsertId();
+        }
+
+        /**
+         * Ergebnis zurückgeben, damit wir in den Controllern, wo wir die save() Methode verwenden, prüfen können, ob
+         * der Query erfolgreich war oder nicht. MySQL gibt nämlich im Erfolgsfall true zurück, im Fehlerfall false.
+         */
+        return $result;
     }
 }

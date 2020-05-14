@@ -67,6 +67,18 @@ class Product
     }
 
     /**
+     * Um für das Produkt Edit Formular den Preis im richtigen Format zu erhalten, damit wir das Input Feld für den
+     * Preis entsprechend vorbefüllen können, wollen wir den Preis hier in einen numerischen String mit 2 Nachkomma-
+     * Stellen formatieren.
+     *
+     * @return string
+     */
+    public function getPriceFloat ()
+    {
+        return sprintf('%.2f', $this->price);
+    }
+
+    /**
      * @param $price
      *
      * @return string

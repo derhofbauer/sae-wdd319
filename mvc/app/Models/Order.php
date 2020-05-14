@@ -55,10 +55,36 @@ class Order
     /**
      * Die save-Methode soll uns helfen, geänderte Daten in die Datenbank zu speichern oder eine neue Zeile in der
      * Datenbank anzulegen, je nachdem, ob das aktuelle Objekt bereits existiert in der Datenbank oder nicht.
+     *
+     * weitere Erklärung s. App\Models\Address::save()
      */
     public function save ()
     {
+        $db = new Database();
 
+        if ($this->id > 0) {
+            $result = $db->query('UPDATE ' . self::$tableName . ' SET user_id = ?, products = ?, delivery_address_id = ?, invoice_address_id = ?, payment_id = ?, status = ? WHERE id = ?', [
+                'i:user_id' => $this->user_id,
+                's:products' => $this->products,
+                'i:delivery_address_id' => $this->delivery_address_id,
+                'i:invoice_address_id' => $this->invoice_address_id,
+                'i:payment_id' => $this->payment_id,
+                's:status' => $this->status,
+                'i:id' => $this->id
+            ]);
+        } else {
+            $result = $db->query('INSERT INTO ' . self::$tableName . ' SET user_id = ?, products = ?, delivery_address_id = ?, invoice_address_id = ?, payment_id = ?, status = ?', [
+                'i:user_id' => $this->user_id,
+                's:products' => $this->products,
+                'i:delivery_address_id' => $this->delivery_address_id,
+                'i:invoice_address_id' => $this->invoice_address_id,
+                'i:payment_id' => $this->payment_id,
+                's:status' => $this->status
+            ]);
+            $this->id = $db->getInsertId();
+        }
+
+        return $result;
     }
 
     /**
@@ -87,6 +113,13 @@ class Order
     }
 
     /**
+     * Nachdem wir in einer Order einen Snapshot der bestellten Produkte zum Zeitpunkt der Bestellung speichern möchten,
+     * haben wir uns für das Format JSON entschieden. Das bedeutet wir haben in der Order Tabelle eine Spalte products,
+     * in welcher für jede Order ein JSON String mit den Werten der bestellten Produkte gespeichert ist. Nachdem es aber
+     * ein JSON String ist, wandeln wir den JSON String hier in PHP Objekte um.
+     *
+     * s. https://www.php.net/manual/de/function.json-decode.php
+     *
      * @return mixed
      */
     public function getProducts ()

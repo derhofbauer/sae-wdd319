@@ -6,7 +6,15 @@
             <label for="status">Status</label>
             <select name="status" id="status" class="form-control">
                 <?php
+                /**
+                 * Damit wir in dem Dropdown den korrekten Wert vorauswählen können, müssen wir das Dropdown dynamisch
+                 * generieren.
+                 */
 
+                /**
+                 * Definieren der values und Labels für die <option>-Tags. Der Array Key ist immer der <option>-Value
+                 * und der Array Value ist die Angezeigte Beschriftung.
+                 */
                 $stati = [
                     'open' => 'Open',
                     'in progress' => 'In Progress',
@@ -15,7 +23,15 @@
                     'delivered' => 'Delivered'
                 ];
 
+                /**
+                 * Für jeden Wert aus $stati generieren wir einen <option>-Tag
+                 */
                 foreach ($stati as $htmlValue => $label) {
+                    /**
+                     * Entspricht der $htmlValue (Array Key von $stati) im aktuellen Schleifendurchlauf dem wert von
+                     * $order->status, dann wollen wir die Option selected setzen. Andernfalls geben wir einen regulären
+                     * <option>-Tag aus.
+                     */
                     if ($htmlValue === $order->status) {
                         echo "<option value=\"$htmlValue\" selected>$label</option>";
                     } else {
@@ -54,6 +70,6 @@
     ?>
 
     <a href="dashboard" class="btn btn-danger">Cancel</a>
-    <a href="orders/<?php echo $order->id; ?>/do-edit" class="btn btn-primary">Save</a>
+    <button class="btn btn-primary" type="submit">Save</button>
 
 </form>
