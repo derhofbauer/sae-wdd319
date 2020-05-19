@@ -90,8 +90,10 @@ class Database
             /**
              * Query fertig "preparen": $stmt->bind_param() mit den entsprechenden Werten ausführen; aber nur, wenn es
              * sich um einen MySQL Query mit Parametern handelt (s. if-Statement).
+             *
+             * @todo: Lösung für die Referenz-Problematik finden.
              */
-            call_user_func_array([$this->stmt, 'bind_param'], $paramValues);
+            @call_user_func_array([$this->stmt, 'bind_param'], $paramValues);
         }
 
         /**

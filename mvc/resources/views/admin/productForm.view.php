@@ -1,5 +1,9 @@
 <h1>Product: #<?php echo $product->id; ?></h1>
 
+<?php foreach ($errors as $error): ?>
+    <p class="alert alert-danger"><?php echo $error; ?></p>
+<?php endforeach; ?>
+
 <form action="products/<?php echo $product->id; ?>/do-edit" method="post" enctype="multipart/form-data">
 
     <div class="form-group">

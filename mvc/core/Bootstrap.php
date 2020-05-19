@@ -31,6 +31,10 @@ class Bootstrap
         return require_once __DIR__ . '/../app/routes.php';
     }
 
+    /**
+     * $_GET['path'], die im .htaccess File definiert ist, verarbeiten und die richtige Controller/Action Kombination
+     * aus dem app/routes.php file suchen.
+     */
     private function getControllerAndAction ()
     {
         /**

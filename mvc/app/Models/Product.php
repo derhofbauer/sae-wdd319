@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Core\Database;
 use Core\Models\ModelTrait;
 
 class Product
@@ -53,7 +54,31 @@ class Product
      */
     public function save ()
     {
+        $db = new Database();
 
+        if ($this->id > 0) {
+            $result = $db->query('UPDATE ' . self::$tableName . ' SET name = ?, description = ?, price = ?, stock = ? WHERE id = ?', [
+                's:name' => $this->name,
+                's:description' => $this->description,
+                'd:price' => $this->price,
+                'i:stock' => $this->stock,
+                'i:id' => $this->id
+            ]);
+        } else {
+            $result = $db->query('INSERT INTO ' . self::$tableName . ' SET name = ?, description = ?, price = ?, stock = ?', [
+                's:name' => $this->name,
+                's:description' => $this->description,
+                'd:price' => $this->price,
+                'i:stock' => $this->stock
+            ]);
+            /**
+             * Bei einem INSERT Query wird von MySQL eine neue ID generiert (sofern eine AUTO_INCREMENT Spalte
+             * existiert). Diese ID lesen wir hier aus und setzen sie ins aktuelle Objekt.
+             */
+            $this->id = $db->getInsertId();
+        }
+
+        return $result;
     }
 
     /**
