@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: May 18, 2020 at 06:53 PM
--- Server version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
--- PHP Version: 7.4.3
+-- Erstellungszeit: 20. Mai 2020 um 17:24
+-- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
+-- PHP-Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `mvc`
+-- Datenbank: `mvc`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `addresses`
+-- Tabellenstruktur für Tabelle `addresses`
 --
 
 CREATE TABLE `addresses` (
@@ -35,7 +35,7 @@ CREATE TABLE `addresses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `addresses`
+-- Daten für Tabelle `addresses`
 --
 
 INSERT INTO `addresses` (`id`, `user_id`, `address`) VALUES
@@ -46,7 +46,7 @@ INSERT INTO `addresses` (`id`, `user_id`, `address`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orders`
+-- Tabellenstruktur für Tabelle `orders`
 --
 
 CREATE TABLE `orders` (
@@ -61,7 +61,7 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `orders`
+-- Daten für Tabelle `orders`
 --
 
 INSERT INTO `orders` (`id`, `crdate`, `user_id`, `products`, `delivery_address_id`, `invoice_address_id`, `payment_id`, `status`) VALUES
@@ -72,7 +72,7 @@ INSERT INTO `orders` (`id`, `crdate`, `user_id`, `products`, `delivery_address_i
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payments`
+-- Tabellenstruktur für Tabelle `payments`
 --
 
 CREATE TABLE `payments` (
@@ -85,7 +85,7 @@ CREATE TABLE `payments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='keine realistische Payments Tabelle!!';
 
 --
--- Dumping data for table `payments`
+-- Daten für Tabelle `payments`
 --
 
 INSERT INTO `payments` (`id`, `name`, `number`, `expires`, `ccv`, `user_id`) VALUES
@@ -94,7 +94,7 @@ INSERT INTO `payments` (`id`, `name`, `number`, `expires`, `ccv`, `user_id`) VAL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `products`
+-- Tabellenstruktur für Tabelle `products`
 --
 
 CREATE TABLE `products` (
@@ -103,21 +103,21 @@ CREATE TABLE `products` (
   `description` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `price` float NOT NULL,
   `stock` int(11) NOT NULL,
-  `images` int(11) DEFAULT NULL
+  `images` text COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `products`
+-- Daten für Tabelle `products`
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`) VALUES
-(3, 'Product 1', 'Product 1 Desc', 42, 10, NULL),
-(4, 'Product 2', 'Product 2 Desc', 9.99, 1, NULL);
+(3, 'Product #3', 'Product #3 Desc', 42, 10, 'uploads/1589995090_37844315_454803461597516_8815318794768482304_n (1).jpg;uploads/1589995431_pimp-rollator.jpg'),
+(4, 'Product  #4', 'Product #4 Desc', 12.99, 10, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Tabellenstruktur für Tabelle `users`
 --
 
 CREATE TABLE `users` (
@@ -130,7 +130,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `users`
+-- Daten für Tabelle `users`
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `is_admin`) VALUES
@@ -138,70 +138,70 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `is_adm
 (2, 'Max', 'Mustermann', 'max.mustermann@email.com', '$2y$12$X5x2waADn8m/7y30qj8CrOihPScwmwPo5Fj8VFgaaA9U1iyom5a22', 0);
 
 --
--- Indexes for dumped tables
+-- Indizes der exportierten Tabellen
 --
 
 --
--- Indexes for table `addresses`
+-- Indizes für die Tabelle `addresses`
 --
 ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `orders`
+-- Indizes für die Tabelle `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `payments`
+-- Indizes für die Tabelle `payments`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `products`
+-- Indizes für die Tabelle `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users`
+-- Indizes für die Tabelle `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT für exportierte Tabellen
 --
 
 --
--- AUTO_INCREMENT for table `addresses`
+-- AUTO_INCREMENT für Tabelle `addresses`
 --
 ALTER TABLE `addresses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `orders`
+-- AUTO_INCREMENT für Tabelle `orders`
 --
 ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `payments`
+-- AUTO_INCREMENT für Tabelle `payments`
 --
 ALTER TABLE `payments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `products`
+-- AUTO_INCREMENT für Tabelle `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;

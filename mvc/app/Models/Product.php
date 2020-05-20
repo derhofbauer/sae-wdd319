@@ -32,6 +32,8 @@ class Product
     public $stock = 0;
     public $images = [];
 
+    public static $imagesDelimiter = ';';
+
     /**
      * Die fill-Methode soll uns helfen, alle Properties der Klasse möglichst einfach und schnell aus einem Datenbank-
      * Ergebniss befüllen zu können.
@@ -45,31 +47,48 @@ class Product
         $this->description = $data['description'];
         $this->price = $data['price'];
         $this->stock = $data['stock'];
-        $this->images = $data['images'];
+
+        /**
+         * @todo: comment
+         */
+        if (!empty($data['images'])) {
+            if (strpos($data['images'], self::$imagesDelimiter) >= 0) {
+                $this->images = explode(self::$imagesDelimiter, $data['images']);
+            } else {
+                $this->images[] = $data['images'];
+            }
+        }
     }
 
     /**
      * Die save-Methode soll uns helfen, geänderte Daten in die Datenbank zu speichern oder eine neue Zeile in der
      * Datenbank anzulegen, je nachdem, ob das aktuelle Objekt bereits existiert in der Datenbank oder nicht.
+     *
+     * explode: 'a-b-c' => Delimiter '-' => ['a', 'b', 'c']
+     * implode: ['a', 'b', 'c'] => Glue ';' => 'a;b;c'
      */
     public function save ()
     {
         $db = new Database();
 
+        $_images = implode(self::$imagesDelimiter, $this->images);
+
         if ($this->id > 0) {
-            $result = $db->query('UPDATE ' . self::$tableName . ' SET name = ?, description = ?, price = ?, stock = ? WHERE id = ?', [
+            $result = $db->query('UPDATE ' . self::$tableName . ' SET name = ?, description = ?, price = ?, stock = ?, images = ? WHERE id = ?', [
                 's:name' => $this->name,
                 's:description' => $this->description,
                 'd:price' => $this->price,
                 'i:stock' => $this->stock,
+                's:images' => $_images,
                 'i:id' => $this->id
             ]);
         } else {
-            $result = $db->query('INSERT INTO ' . self::$tableName . ' SET name = ?, description = ?, price = ?, stock = ?', [
+            $result = $db->query('INSERT INTO ' . self::$tableName . ' SET name = ?, description = ?, price = ?, stock = ?, images = ?', [
                 's:name' => $this->name,
                 's:description' => $this->description,
                 'd:price' => $this->price,
-                'i:stock' => $this->stock
+                'i:stock' => $this->stock,
+                's:images' => $_images
             ]);
             /**
              * Bei einem INSERT Query wird von MySQL eine neue ID generiert (sofern eine AUTO_INCREMENT Spalte
@@ -111,5 +130,30 @@ class Product
     public static function formatPrice ($price)
     {
         return sprintf('&euro; %.2f ,-', $price);
+    }
+
+    /**
+     * Übergebenen Pfad in $this->images einfügen, sofern er nicht schon drin ist.
+     *
+     * @param string $filepath
+     */
+    public function addImage (string $filepath)
+    {
+        if (!in_array($filepath, $this->images)) {
+            $this->images[] = $filepath;
+        }
+    }
+
+    /**
+     * Übergebenen Pfad aus $this->images löschen
+     *
+     * @param string $filepath
+     */
+    public function removeImage (string $filepath)
+    {
+        $indexForFilepath = array_search($filepath, $this->images);
+        if ($indexForFilepath !== false) {
+            unset($this->images[$indexForFilepath]);
+        }
     }
 }

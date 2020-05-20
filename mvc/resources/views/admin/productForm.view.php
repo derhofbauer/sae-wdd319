@@ -30,13 +30,28 @@
 
     <div class="row">
         <div class="form-group col">
-            <label for="images[]">Images</label>
+            <label for="images[]">Add Images</label>
             <input type="file" class="form-control-file" name="images[]" multiple>
         </div>
 
-        <!--
-        @todo: Show uploaded files.
-        -->
+
+        <div class="col">
+            <label for="delete-images">Images</label>
+            <?php if (!empty($product->images)): ?>
+                <div class="row">
+                    <?php foreach ($product->images as $image): ?>
+                        <div class="form-group form-check col-4">
+                            <label>
+                                <input type="checkbox" class="form-check-input" name="delete-images[<?php echo $image; ?>]">
+                                <img src="storage/<?php echo $image; ?>" width="50" height="auto">
+                            </label>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <p class="alert alert-info">Derzeit sind keine Bilder verlinkt.</p>
+            <?php endif; ?>
+        </div>
     </div>
 
     <a href="dashboard" class="btn btn-danger">Cancel</a>

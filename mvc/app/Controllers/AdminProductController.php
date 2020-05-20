@@ -80,8 +80,39 @@ class AdminProductController
         $product->stock = (int)$_POST['stock'];
 
         /**
-         * @todo: handle uploaded files
+         * Hochgeladene Dateien aus dem Formular entgegennehmen
+         *
+         * @todo: comment
          */
+        foreach ($_FILES['images']['error'] as $index => $error) {
+            if ($error === 0) {
+                $type = $_FILES['images']['type'][$index]; // image/jpeg, image/gif, application/pdf, ...
+                $type = explode('/', $type)[0];
+                if ($type === 'image') {
+                    $tmp_name = $_FILES['images']['tmp_name'][$index];
+                    $filename = basename($_FILES['images']['name'][$index]);
+                    $filename = time() . "_" . $filename;
+                    $destination = __DIR__ . "/../../storage/uploads/$filename";
+                    move_uploaded_file($tmp_name, $destination);
+
+                    $product->addImage("uploads/$filename");
+                }
+            }
+        }
+
+        /**
+         * Im Formular angehakerlte Dateien löschen
+         */
+        if (isset($_POST['delete-images'])) {
+            foreach ($_POST['delete-images'] as $imagePath => $unusedValue) {
+                $product->removeImage($imagePath);
+
+                /**
+                 * @todo: comment (Inkonsistenz zwischen DB und Storage kann entstehen)
+                 */
+                unlink(__DIR__ . "/../../storage/$imagePath");
+            }
+        }
 
         /**
          * Aktualisierte Eigenschaften in die Datenbank speichern.
@@ -91,8 +122,8 @@ class AdminProductController
         /**
          * Redirect
          */
-        header("Location: $baseUrl/dashboard");
-        exit;
+         header("Location: $baseUrl/dashboard");
+         exit;
     }
 
 }
