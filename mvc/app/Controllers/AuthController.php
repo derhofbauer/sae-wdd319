@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 use Core\Helpers\Config;
+use Core\Helpers\Validator;
 use Core\Session;
 use Core\View;
 
@@ -126,6 +127,68 @@ class AuthController
          * Account ausloggen und weiterleiten
          */
         User::logout("home");
+    }
+
+    /**
+     * Zeigt das Registrierungsformular, wenn aktuell noch kein User eingeloggt ist.
+     * Nähere Erklärung zur Logik in der AuthController::loginForm()
+     */
+    public function signupForm ()
+    {
+        if (User::isLoggedIn()) {
+            $user = User::getLoggedInUser();
+
+            $redirectUrl = 'home';
+            if ($user->is_admin === true) {
+                $redirectUrl = 'dashboard';
+            }
+
+            header("Location: $redirectUrl");
+            exit;
+        } else {
+            View::load('signup', [
+                'errors' => Session::get('errors', [], true),
+            ]);
+        }
+    }
+
+    /**
+     * Nimmt die Formulardaten aus dem Registrierungsformular entgegen.
+     */
+    public function signup ()
+    {
+        // var_dump($_POST);
+        $baseUrl = Config::get('app.baseUrl');
+
+        /**
+         * Daten validieren
+         */
+        $validator = new Validator();
+        $validator->validate($_POST['firstname'], 'Firstname', true, 'text', 2, 255);
+        $validator->validate($_POST['lastname'], 'Lastname', true, 'text', 2, 255);
+        $validator->validate($_POST['email'], 'Email', true, 'email');
+        $validator->validate($_POST['password'], 'Passwort', true, 'password');
+        $validator->compare($_POST['password'], $_POST['password2']);
+
+        /**
+         * Fehler aus dem Validator holen
+         */
+        $errors = $validator->getErrors();
+
+        /**
+         * Wenn Validierungsfehler aufgetreten sind, speichern wir die Fehler zur späteren Anzeige in die Session und
+         * leiten zurück zum Registrierungsformular, wo die Fehler aus der Session angezeigt werden.
+         */
+        if ($errors !== false) {
+            Session::set('errors', $errors);
+            header("Location: $baseUrl/sign-up");
+            exit;
+        }
+
+        /*
+         * @todo: CONTINUE HERE!
+         */
+
     }
 
 }

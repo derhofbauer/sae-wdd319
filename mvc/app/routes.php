@@ -14,6 +14,10 @@ return [
     '/do-login' => 'AuthController.login',
     '/logout' => 'AuthController.logout',
 
+    '/sign-up' => 'AuthController.signupForm',
+    '/do-sign-up' => 'AuthController.signup',
+    '/sign-up/success' => 'AuthController.signupSuccess',
+
     /**
      * Backend Routes
      */

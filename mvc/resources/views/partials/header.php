@@ -32,6 +32,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="login">Login</a>
                 </li>
+                <li class="nav-item">
+                    <a href="sign-up" class="nav-link">Registrieren</a>
+                </li>
             <?php endif; ?>
         </ul>
     </div>

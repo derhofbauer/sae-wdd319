@@ -32,6 +32,13 @@ class Product
     public $stock = 0;
     public $images = [];
 
+    /**
+     * Den Delimiter definieren wir uns, damit wir an mehreren Stellen darauf zugreifen können. Wir werden ihn verwenden
+     * um die Produktbilder in einen String zu verpacken und in die Datenbank zu speichern oder den String aus der DB in
+     * ein Array zu zerlegen.
+     *
+     * @var string
+     */
     public static $imagesDelimiter = ';';
 
     /**
@@ -49,7 +56,14 @@ class Product
         $this->stock = $data['stock'];
 
         /**
-         * @todo: comment
+         * Es kann passieren, dass in der Datenbank keine Bilder verlinkt sind, aber ein leerer String drin steht. Wir
+         * wollen den Wert aus der Datenbank also nur dann weiterverarbeiten, wenn er nicht leer ist. Und in diesem Fall
+         * prüfen wir ob der Delimiter vor kommt und wir somit mehr als ein Bild in der Datenbank verlinkt haben zu dem
+         * aktuellen Produkt, oder nicht. Gibt es nämlich mindestens zwei Bilder, müssen wir sie exploden, damit wir ein
+         * Array auf $this->images setzen können, mit dem wir hübsch weiter arbeiten können.
+         *
+         * explode: 'a-b-c' => Delimiter '-' => ['a', 'b', 'c']
+         * implode: ['a', 'b', 'c'] => Glue ';' => 'a;b;c'
          */
         if (!empty($data['images'])) {
             if (strpos($data['images'], self::$imagesDelimiter) >= 0) {
@@ -64,13 +78,15 @@ class Product
      * Die save-Methode soll uns helfen, geänderte Daten in die Datenbank zu speichern oder eine neue Zeile in der
      * Datenbank anzulegen, je nachdem, ob das aktuelle Objekt bereits existiert in der Datenbank oder nicht.
      *
-     * explode: 'a-b-c' => Delimiter '-' => ['a', 'b', 'c']
-     * implode: ['a', 'b', 'c'] => Glue ';' => 'a;b;c'
      */
     public function save ()
     {
         $db = new Database();
 
+        /**
+         * Nachdem $this->images ein Array ist und wir keine Arrays in die Datenbank speichern können, wandeln wir den
+         * Array hier in einen String um, indem wir ihn imploden.
+         */
         $_images = implode(self::$imagesDelimiter, $this->images);
 
         if ($this->id > 0) {
@@ -133,25 +149,37 @@ class Product
     }
 
     /**
-     * Übergebenen Pfad in $this->images einfügen, sofern er nicht schon drin ist.
+     * Übergebenen Pfad in $this->images einfügen, sofern er nicht schon drin ist. Das hier ist eine reine
+     * Hilfsfunktion.
      *
      * @param string $filepath
      */
     public function addImage (string $filepath)
     {
+        /**
+         * Wenn der $filepath nicht bereits im $this->images Array vorkommt, dann hängen wir ihn dran.
+         */
         if (!in_array($filepath, $this->images)) {
             $this->images[] = $filepath;
         }
     }
 
     /**
-     * Übergebenen Pfad aus $this->images löschen
+     * Übergebenen Pfad aus $this->images löschen. Das hier ist eine reine Hilfsfunktion.
      *
      * @param string $filepath
      */
     public function removeImage (string $filepath)
     {
+        /**
+         * Herausfinden, an welchem Array Index $filepath in $this->images vorkommt. Wenn $filepath nicht gefunden wird,
+         * wird false zurückgegeben.
+         */
         $indexForFilepath = array_search($filepath, $this->images);
+
+        /**
+         * Wird $filepath gefunden, löschen wir mit der unset-Funktion den Wert am gefundenen Index.
+         */
         if ($indexForFilepath !== false) {
             unset($this->images[$indexForFilepath]);
         }

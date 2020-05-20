@@ -80,21 +80,65 @@ class AdminProductController
         $product->stock = (int)$_POST['stock'];
 
         /**
-         * Hochgeladene Dateien aus dem Formular entgegennehmen
+         * Hochgeladene Dateien aus dem Formular entgegennehmen. Die Dateien werden als Array übergeben, weil wir
+         * mehrere Dateien hochladen könnten. S. dazu auch das Beispiele/1-file-upload.php
          *
-         * @todo: comment
+         * Nachdem es sich um einen Array handelt, gehen wir mit einer Schleife alle Dateien in dem Array durch.
          */
         foreach ($_FILES['images']['error'] as $index => $error) {
+            /**
+             * Wenn kein Fehler beim Upload der aktuellen Datei aufgetreten ist, dann verarbeiten wir die Datei weiter.
+             */
             if ($error === 0) {
-                $type = $_FILES['images']['type'][$index]; // image/jpeg, image/gif, application/pdf, ...
+                /**
+                 * Wir akzeptieren nur Bilder. Über den MIME-Type können wir relative leicht herausfinden, ob eine Datei
+                 * ein Bild ist oder nicht. MIME-Types schauen wie folgt aus: image/jpeg, image/gif, application/pdf ...
+                 *
+                 * Um zu erkennen ob es sich um ein Bild handelt, teilen wir den String am Slash und nehmen den Wert 0,
+                 * also "image" oder "application".
+                 */
+                $type = $_FILES['images']['type'][$index];
                 $type = explode('/', $type)[0];
+
+                /**
+                 * Handelt es sich um ein Bild?
+                 */
                 if ($type === 'image') {
+                    /**
+                     * $tmp_name ist der Dateipfad, an den PHP das File temporär gespeichert hat.
+                     */
                     $tmp_name = $_FILES['images']['tmp_name'][$index];
+
+                    /**
+                     * Die basename-Funktion gibt den Dateinamen aus einem kompletten Dateipfad zurück:
+                     * basename('/Application/MAMP/htdocs/index.php') ==> 'index.php
+                     *
+                     * Wir stellen so sicher, dass wir wirklich nur den originalen Dateinamen bekommen.
+                     */
                     $filename = basename($_FILES['images']['name'][$index]);
+
+                    /**
+                     * Damit im Zuge des Uploads bereits existierende Dateien nicht überschrieben werden, hängen wir
+                     * einen UNIX-Timestamp vorne dran. Dadurch haben wir zwar potentiell die selbe Datei mehrfach, aber
+                     * es kommt nicht zu Datenverlust.
+                     */
                     $filename = time() . "_" . $filename;
+
+                    /**
+                     * Hier definieren wir uns den absoluten Pfad, an den die Datei vom $tmp_name aus verschoben werden
+                     * soll.
+                     */
                     $destination = __DIR__ . "/../../storage/uploads/$filename";
+
+                    /**
+                     * Verschieben der hochgeladenen Datei von $tmp_name nach $destination.
+                     */
                     move_uploaded_file($tmp_name, $destination);
 
+                    /**
+                     * Hochgeladenes Bild zum Product hinzufügen. Hier wird es noch nicht in die Datenbank gespeichert,
+                     * sondern nur in dem PHP Objekt im RAM des Servers.
+                     */
                     $product->addImage("uploads/$filename");
                 }
             }
@@ -102,13 +146,22 @@ class AdminProductController
 
         /**
          * Im Formular angehakerlte Dateien löschen
+         *
+         * Wurden Dateien zur Löschung angehakerlt?
          */
         if (isset($_POST['delete-images'])) {
+            /**
+             * Für jede angehakerlte Checkbox, entfernen wir die Datei aus dem Product und löschen sie physisch vom
+             * Server.
+             */
             foreach ($_POST['delete-images'] as $imagePath => $unusedValue) {
+                /**
+                 * Datei aus dem Product entfernen.
+                 */
                 $product->removeImage($imagePath);
 
                 /**
-                 * @todo: comment (Inkonsistenz zwischen DB und Storage kann entstehen)
+                 * Die unlink-Funktion löscht eine Datei.
                  */
                 unlink(__DIR__ . "/../../storage/$imagePath");
             }
@@ -116,14 +169,19 @@ class AdminProductController
 
         /**
          * Aktualisierte Eigenschaften in die Datenbank speichern.
+         *
+         * Tritt ein Fehler auf, bevor diese Zeile aufgerufen wird, kann es passieren, dass Dateien auf Zeile 166
+         * gelöscht werden, auf 161 auch aus dem Produkt entfernt werden, die Änderungen am Produkt aber nicht in die
+         * Datenbank gespeichert werden. Das kann dazu führen, dass in der Datenbank Dateien verlinkt sind, die
+         * physisch nicht mehr existieren. Dieser Fall ist sehr unwahrscheinlich, kann aber rein theoretisch auftreten.
          */
         $product->save();
 
         /**
          * Redirect
          */
-         header("Location: $baseUrl/dashboard");
-         exit;
+        header("Location: $baseUrl/dashboard");
+        exit;
     }
 
 }

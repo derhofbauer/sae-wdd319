@@ -105,6 +105,35 @@ class Validator
                 $this->setError(3);
                 return false;
             }
+        } else {
+            /**
+             * Kommt der $type nicht im $this->types array vor, schauen wir, ob es sich um eine von uns geschriebene
+             * Spezialvalidierung handelt.
+             */
+            if ($type === 'password') {
+                /**
+                 * Wenn der String in $data gleich ist mit einer Lowercase Version von sich selbst, dann hatte der
+                 * String von vorn herein keine Großbuchstaben. Genauso umgekehrt mit der Uppercase Version. Danach
+                 * prüfen wir, ob mindestens eine Ziffer im String vorkommt und danach ob mindestens eines der
+                 * Sonderzeichen aus der Liste vorkommt. Danach prüfen wir noch ob die Länge des Strings kleiner ist als
+                 * 8 Zeichen.
+                 *
+                 * Die Kriterien für ein Passwort sind also:
+                 * Kleinbuchstaben, Großbuchstaben, Ziffern, Sonderzeichen, mind. 8 Zeichen
+                 */
+                if (
+                    $data === strtolower($data) ||
+                    $data === strtoupper($data) ||
+                    preg_match('/[0-9]+/', $data) !== 1 ||
+                    preg_match('/[!?*:_\-#"\'(){}\[\]]+/', $data) !== 1 ||
+                    strlen($data) < 8
+                ) {
+                    /**
+                     * Trifft eines der Kriterien nicht zu, setzen wir einen Fehler vom Typ 7.
+                     */
+                    $this->setError(7);
+                }
+            }
         }
     }
 
@@ -145,6 +174,8 @@ class Validator
             case 6:
                 array_push($this->errors, "E-Mailadresse ist bereits vergeben.");
                 break;
+            case 7:
+                array_push($this->errors, "Ein Passwort muss Groß- und Kleinbuchstaben, Ziffern und Sonderzeichen enthalten und mind. 8 Zeichen lang sein.");
             default:
                 array_push($this->errors, "{$this->currentName} ist nicht valide!");
         }

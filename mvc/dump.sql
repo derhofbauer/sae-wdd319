@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 20. Mai 2020 um 17:24
+-- Erstellungszeit: 20. Mai 2020 um 19:04
 -- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
 -- PHP-Version: 7.4.3
 
@@ -112,7 +112,7 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`) VALUES
 (3, 'Product #3', 'Product #3 Desc', 42, 10, 'uploads/1589995090_37844315_454803461597516_8815318794768482304_n (1).jpg;uploads/1589995431_pimp-rollator.jpg'),
-(4, 'Product  #4', 'Product #4 Desc', 12.99, 10, NULL);
+(4, 'Product  #4', 'Product #4 Desc', 12.99, 10, 'uploads/1589996660_pimp-rollator.jpg');
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `is_admin`) VALUES
-(1, 'Arthur', 'Dent', 'arthur.dent@galaxy.com', '$2y$12$OGHFyvBCtXl5fK6mnbo9Z.GHDSSnrSVcdfsnuSRdqOy5AE0TLRggK', 1),
+(1, 'Arthur', 'Dent', 'arthur.dent@galaxy.com', '$2y$12$Ce.K9H2fW0biynPXeb5pHekGx2SYzMSOnm6TEki.cj2DDqVvCzcr2', 1),
 (2, 'Max', 'Mustermann', 'max.mustermann@email.com', '$2y$12$X5x2waADn8m/7y30qj8CrOihPScwmwPo5Fj8VFgaaA9U1iyom5a22', 0);
 
 --
