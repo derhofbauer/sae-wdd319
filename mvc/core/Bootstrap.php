@@ -168,7 +168,12 @@ class Bootstrap
          * Wenn kein Controller gefunden wurde, zeigen wir das an. Eigentlich sollten wir hier eine 404 Seite laden.
          */
         if ($controller === '') {
-            exit('404 Seite - @todo: hübsche 404 Seite bauen ;)');
+            /**
+             * Die 404 Seite ist ein View wie jeder andere, wir können ihn daher also auch ident laden. Würden wir hier
+             * als 2. Parameter einen Array mit einem 'message' Key übergeben, würde die Standard Fehlermeldung im
+             * 404.view.php mit dieser $message überschrieben werden.
+             */
+            View::load('404');
         } else {
 
             /**
