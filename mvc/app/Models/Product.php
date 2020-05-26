@@ -77,7 +77,6 @@ class Product
     /**
      * Die save-Methode soll uns helfen, geänderte Daten in die Datenbank zu speichern oder eine neue Zeile in der
      * Datenbank anzulegen, je nachdem, ob das aktuelle Objekt bereits existiert in der Datenbank oder nicht.
-     *
      */
     public function save ()
     {

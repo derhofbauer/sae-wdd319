@@ -25,11 +25,13 @@
             </li>
             <?php if (\App\Models\User::isLoggedIn()): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="dashboard">Dashboard</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="logout">Logout</a>
                 </li>
+                <?php if (\App\Models\User::getLoggedInUser()->is_admin === true): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard">Dashboard</a>
+                    </li>
+                <?php endif; ?>
             <?php else: ?>
                 <li class="nav-item">
                     <a class="nav-link" href="login">Login</a>
@@ -38,6 +40,9 @@
                     <a href="sign-up" class="nav-link">Registrieren</a>
                 </li>
             <?php endif; ?>
+            <li class="nav-item">
+                <a href="cart" class="nav-link">Cart</a>
+            </li>
         </ul>
     </div>
 </nav>

@@ -186,7 +186,7 @@ class Validator
      * Bietet die Möglichkeit an der Stelle, an der der Validator verwendet wird, die entstandenen Fehler zu erhalten
      * und weiterverarbeiten zu können.
      *
-     * @return array|bool
+     * @return array
      */
     public function getErrors ()
     {
@@ -197,6 +197,6 @@ class Validator
          *
          * In diesem Fall also: Wenn count von $this->error größer ist als 0, dann gib $this->error zurück, sonst false.
          */
-        return (count($this->errors) > 0) ? $this->errors : false;
+        return (count($this->errors) > 0) ? $this->errors : [];
     }
 }

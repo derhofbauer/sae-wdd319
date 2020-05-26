@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\User;
 use Core\Helpers\Config;
 use Core\Helpers\Validator;
+use Core\Libs\PHPMailer;
 use Core\Session;
 use Core\View;
 
@@ -176,19 +177,71 @@ class AuthController
         $errors = $validator->getErrors();
 
         /**
+         * Nachdem die eingegebenen Daten nun Validiert sind, möchten wir wissen, ob die Email-Adresse schon in unserer
+         * Datenbank existiert oder nicht. Dazu nutzen wir die findByEmail-Methode der User Klasse, die wir extra so
+         * gebaut haben, dass sie false zurück gibt, wenn kein Eintrag gefunden wurde. Existiert die Email-Adresse schon
+         * und kann somit nicht mehr verwendet werden, geben wir einen Fehler aus.
+         */
+        if (User::findByEmail($_POST['email']) !== false) {
+            $errors[] = "Diese Email-Adresse wird bereits verwendet.";
+        }
+
+        /**
          * Wenn Validierungsfehler aufgetreten sind, speichern wir die Fehler zur späteren Anzeige in die Session und
          * leiten zurück zum Registrierungsformular, wo die Fehler aus der Session angezeigt werden.
          */
-        if ($errors !== false) {
+        if (!empty($errors)) {
             Session::set('errors', $errors);
             header("Location: $baseUrl/sign-up");
             exit;
         }
 
-        /*
-         * @todo: CONTINUE HERE!
+        /**
+         * Wenn kein Validierungsfehler auftritt, wollen wir den Account speichern
+         */
+        $user = new User();
+        $user->firstname = $_POST['firstname'];
+        $user->lastname = $_POST['lastname'];
+        $user->email = $_POST['email'];
+        $user->setPassword($_POST['password']);
+        $user->save();
+
+        /**
+         * Hier müssten wir eigentlich Fehler, die beim Speichern in die Datenbank auftreten könnten, handeln. Wir
+         * werden aber für Übersichtichkeit und Einfachheit darauf verzichten.
          */
 
+        /**
+         * Die PHPMailer Klasse ist eine externe Klasse, die wir als Anbieter von dem MVC für unsere Anwender
+         * mitliefern. Sie unterstützt mehrere Methoden Emails zu verschicken, mehr dazu in der Dokumentation:
+         * https://github.com/PHPMailer/PHPMailer
+         *
+         * Grundsätzlich werdet ihr am Anfang eurer Developer-Karriere selbst keine Emails verschicken müssen sondern
+         * über das verwendete Framework (bspw. Laravel) Emails zusammenbauen.
+         *
+         * Zum Testen von Emails bieten sich dienste wie Ethereal an, die genau dafür entwickelt wurden:
+         * https://ethereal.email/
+         */
+        if (PHPMailer::ValidateAddress($user->email)) {
+            $mail = new PHPMailer();
+            $mail->isMail();
+            $mail->AddAddress($user->email);
+            $mail->SetFrom('no-reply@mvc-sae.at');
+            $mail->Subject = 'Herzlich Wilkommen!';
+            $mail->Body = 'Sie haben sich erfolgreich registriert!\n\rDanke dafür! :*';
+
+            $mail->Send();
+
+            header("Location: $baseUrl/login");
+            exit;
+        } else {
+            /**
+             * Erkennt PHPMailer keine gültige Email-Adresse, müsste hier ein besserer Fehler ausgegeben werden. Wir
+             * könnten beispielsweise einen eigenen Fehler-View bauen (ähnlich wie 404.view.php), werden das aber
+             * vorerst einmal noch nicht machen und uns auf die wesentlicheren Dinge konzentrieren.
+             */
+            die('PHPMailer Error');
+        }
     }
 
 }

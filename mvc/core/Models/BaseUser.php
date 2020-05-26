@@ -14,7 +14,7 @@ use Core\Session;
  */
 trait BaseUser
 {
-    public $password = '';
+    protected $password = '';
     public $id = 0;
     public static $tableName = 'users';
 
@@ -31,6 +31,22 @@ trait BaseUser
          * verify_password wird von PHP mitgeliefert.
          */
         return password_verify($password, $this->password);
+    }
+
+    /**
+     * Nachdem das Passwort gehashed werden muss, bevor es in die Datenbank gespeichert werden kann, sollten wir es
+     * nicht direkt setzen sondern bieten hier eine Methode dafür an.
+     *
+     * @param string $plainPassword
+     */
+    public function setPassword (string $plainPassword)
+    {
+        /**
+         * Die password_hash Methode unterstützt ein paar Hash-Algorithmen. Die PHP Konstanten PASSWORD_DEFAULT und
+         * PASSWORD_BCRYPT verwenden aber beide BCrypt mit dem Blowfish Algorithmus. Das ist aktuell ein sehr guter und
+         * sicherer Algorithmus.
+         */
+        $this->password = password_hash($plainPassword, PASSWORD_BCRYPT);
     }
 
     /**
@@ -133,6 +149,11 @@ trait BaseUser
             's:email' => $email
         ]);
 
+        /**
+         * Damit wir die findByEmail Methode auch dazu verwenden können zu prüfen, ob ein Account mit einer bestimmten
+         * Mail-Adresse schon existiert oder nicht, geben wir false zurück, wenn kein Treffer zur $email gefunden wurde.
+         * Das ist grade im Registrierungsprozess enorm hilfreich, weil wir dann keine eigene Funktion schreiben müssen.
+         */
         if (count($result) === 0) {
             return false;
         }

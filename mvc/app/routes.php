@@ -33,4 +33,9 @@ return [
      */
     '/products' => 'ProductController.list',
     '/products/{id}' => 'ProductController.showProduct', // ProductController.php => ProductController::showProduct($id)
+
+    /**
+     * Cart Routes
+     */
+    '/cart' => 'CartController.index',
 ];
