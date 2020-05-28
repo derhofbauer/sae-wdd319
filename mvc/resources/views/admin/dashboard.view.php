@@ -45,6 +45,7 @@
     <div class="card">
         <div class="card-header">
             Products (<?php echo count($products); ?>)
+            <a href="dashboard/products/add" class="btn btn-primary btn-sm">Add</a>
         </div>
         <ul class="list-group list-group-flush">
             <?php foreach ($products as $product): ?>

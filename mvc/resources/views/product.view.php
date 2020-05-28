@@ -6,6 +6,8 @@
         </div>
         <div class="price"><?php printf('%0.2f ,-', $product->price); ?></div>
 
+        <a href="cart/add/<?php echo $product->id; ?>" class="btn btn-primary">Add to cart</a>
+
         <a class="btn btn-default" href="products">View all</a>
     </div>
     <?php if (!empty($product->images)): ?>

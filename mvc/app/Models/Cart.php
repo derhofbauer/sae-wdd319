@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Core\Models\ModelTrait;
 use Core\Session;
 
 /**
@@ -89,7 +88,7 @@ class Cart
      * @param int $productId
      * @param int $quantity
      */
-    public function removeProduct (int $productId, int $quantity = 0)
+    public function removeProduct (int $productId, int $quantity = 1)
     {
         if (array_key_exists($productId, $this->products)) {
             $this->updateProduct($productId, $this->products[$productId] - $quantity);

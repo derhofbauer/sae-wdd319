@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 20. Mai 2020 um 19:04
+-- Erstellungszeit: 28. Mai 2020 um 19:11
 -- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
 -- PHP-Version: 7.4.3
 
@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 -- Tabellenstruktur für Tabelle `addresses`
 --
 
+DROP TABLE IF EXISTS `addresses`;
 CREATE TABLE `addresses` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -49,6 +50,7 @@ INSERT INTO `addresses` (`id`, `user_id`, `address`) VALUES
 -- Tabellenstruktur für Tabelle `orders`
 --
 
+DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `crdate` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'creation date',
@@ -75,10 +77,11 @@ INSERT INTO `orders` (`id`, `crdate`, `user_id`, `products`, `delivery_address_i
 -- Tabellenstruktur für Tabelle `payments`
 --
 
+DROP TABLE IF EXISTS `payments`;
 CREATE TABLE `payments` (
   `id` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `number` int(11) NOT NULL,
+  `number` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `expires` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `ccv` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
@@ -89,7 +92,9 @@ CREATE TABLE `payments` (
 --
 
 INSERT INTO `payments` (`id`, `name`, `number`, `expires`, `ccv`, `user_id`) VALUES
-(1, 'Mag. Max Mustermann', 123456789, '12-2020', 913, 2);
+(1, 'Mag. Max Mustermann', '123456789', '12-2020', 913, 2),
+(2, 'Arthur Dent', '41434542', '12-2022', 309, 1),
+(3, 'Hitchhikers HQ Visa', '76239651042', '12-2022', 309, 1);
 
 -- --------------------------------------------------------
 
@@ -97,6 +102,7 @@ INSERT INTO `payments` (`id`, `name`, `number`, `expires`, `ccv`, `user_id`) VAL
 -- Tabellenstruktur für Tabelle `products`
 --
 
+DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -111,8 +117,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`) VALUES
-(3, 'Product #3', 'Product #3 Desc', 42, 10, 'uploads/1589995090_37844315_454803461597516_8815318794768482304_n (1).jpg;uploads/1589995431_pimp-rollator.jpg'),
-(4, 'Product  #4', 'Product #4 Desc', 12.99, 10, 'uploads/1589996660_pimp-rollator.jpg');
+(3, 'Product #3', 'Product #3 Desc', 42, 9, 'uploads/1589995090_37844315_454803461597516_8815318794768482304_n (1).jpg;uploads/1589995431_pimp-rollator.jpg'),
+(4, 'Product #4', 'Product #4 Desc', 12.99, 10, 'uploads/1589996660_pimp-rollator.jpg'),
+(5, 'Product #5', 'Product #5 Desc', 10, 5, 'uploads/1590687389_37844315_454803461597516_8815318794768482304_n (1).jpg');
 
 -- --------------------------------------------------------
 
@@ -120,6 +127,7 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`)
 -- Tabellenstruktur für Tabelle `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `firstname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -135,7 +143,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `is_admin`) VALUES
 (1, 'Arthur', 'Dent', 'arthur.dent@galaxy.com', '$2y$12$Ce.K9H2fW0biynPXeb5pHekGx2SYzMSOnm6TEki.cj2DDqVvCzcr2', 1),
-(2, 'Max', 'Mustermann', 'max.mustermann@email.com', '$2y$12$X5x2waADn8m/7y30qj8CrOihPScwmwPo5Fj8VFgaaA9U1iyom5a22', 0);
+(2, 'Max', 'Mustermann', 'max.mustermann@email.com', '$2y$12$X5x2waADn8m/7y30qj8CrOihPScwmwPo5Fj8VFgaaA9U1iyom5a22', 0),
+(5, 'Alexander', 'Hofbauer', 'hofbauer.alexander@gmail.com', '$2y$10$SyL6F3XDe7KRJq2Nuq0GteXc6gOOlvFlyi9x3yEHM5pMvBGgCSL6K', 0);
 
 --
 -- Indizes der exportierten Tabellen
@@ -192,19 +201,19 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT für Tabelle `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT für Tabelle `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT für Tabelle `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

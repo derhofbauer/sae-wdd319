@@ -22,6 +22,8 @@ return [
      * Backend Routes
      */
     '/dashboard' => 'AdminController.dashboard',
+    '/dashboard/products/add' => 'AdminProductController.addForm',
+    '/dashboard/products/do-add' => 'AdminProductController.add',
     '/products/{id}/edit' => 'AdminProductController.editForm',
     '/products/{id}/do-edit' => 'AdminProductController.edit',
 
@@ -38,4 +40,14 @@ return [
      * Cart Routes
      */
     '/cart' => 'CartController.index',
+    '/cart/add/{id}' => 'CartController.addProductToCart',
+    '/cart/sub/{id}' => 'CartController.removeProductFromCart',
+    '/cart/remove/{id}' => 'CartController.deleteProductFromCart',
+    '/cart/update/{id}' => 'CartController.updateProductInCart',
+
+    /**
+     * Checkout Routes
+     */
+    '/checkout' => 'CheckoutController.paymentForm',
+    '/checkout/handle-payment' => 'CheckoutController.handlePayment'
 ];
