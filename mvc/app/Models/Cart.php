@@ -133,4 +133,17 @@ class Cart
         return $_products;
     }
 
+    /**
+     * Wir möchten eine einfache Möglickeit, alle Produkte auf einmal aus dem Cart zu werfen. "Flushing" hat sich dabei
+     * konventionell zu dem Begriff entwickelt, der für eine solche Funktionalität verwendet wird.
+     */
+    public function flush ()
+    {
+        /**
+         * Produkte auf den Ausgangswert setzen. Durch den Cart::__destruct() wird dieser Wert dann in die Session
+         * synchronisiert und somit persistiert.
+         */
+        $this->products = [];
+    }
+
 }

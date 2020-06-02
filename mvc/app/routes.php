@@ -22,6 +22,8 @@ return [
      * Backend Routes
      */
     '/dashboard' => 'AdminController.dashboard',
+    '/dashboard/accounts' => 'AdminAccountController.list',
+    '/dashboard/accounts/edit/{id}' => 'AdminAccountController.editForm',
     '/dashboard/products/add' => 'AdminProductController.addForm',
     '/dashboard/products/do-add' => 'AdminProductController.add',
     '/products/{id}/edit' => 'AdminProductController.editForm',
@@ -49,5 +51,16 @@ return [
      * Checkout Routes
      */
     '/checkout' => 'CheckoutController.paymentForm',
-    '/checkout/handle-payment' => 'CheckoutController.handlePayment'
+    '/checkout/handle-payment' => 'CheckoutController.handlePayment',
+    '/checkout/address' => 'CheckoutController.addressForm',
+    '/checkout/handle-address' => 'CheckoutController.handleAddress',
+    '/checkout/final' => 'CheckoutController.finalOverview',
+    '/checkout/do-checkout' => 'CheckoutController.finaliseCheckout',
+
+    /**
+     * Account Routes
+     */
+    '/account' => 'AccountController.editForm',
+    '/account/orders' => 'AccountController.orders',
+    '/account/do-edit' => 'AccountController.edit'
 ];

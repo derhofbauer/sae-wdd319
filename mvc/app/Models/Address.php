@@ -81,4 +81,50 @@ class Address
          */
         return $result;
     }
+
+    /**
+     * Methode, die im ModelTrait nicht implementiert ist, weil sie einen Use-Case abdeckt, der nicht allgemein genug
+     * ist. Wir möchten Adressen nämlich auch für nur einen einzigen User finden können. Diese Methode ist von der
+     * Logik her eine Mischung zwischen den Methoden all() und find(). Erklärungen können daher im ModelTrait bei den
+     * entsprechenden Methoden gefunden werden.
+     *
+     * @param int $userId
+     *
+     * @return array
+     */
+    public static function findByUser (int $userId)
+    {
+        $db = new Database();
+
+        $tableName = self::$tableName;
+        $result = $db->query("SELECT * FROM {$tableName} WHERE user_id = ?", [
+            'i:user_id' => $userId
+        ]);
+
+        $data = [];
+        foreach ($result as $resultItem) {
+            $date = new self($resultItem);
+            $data[] = $date;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Wir möchten die Funktionalität, die Newline-Steuerzeichen aus der Datenbank in <br>-Tags umzuwandeln direkt an
+     * die Adresse koppeln.
+     *
+     * @return string
+     */
+    public function getAddressHtml ()
+    {
+        /**
+         * PHP liefert eine Funktion mit, die genau diese Funktionalität unterstützt: nl2br.
+         *
+         * s. https://www.php.net/manual/de/function.nl2br.php
+         */
+        $addressWithBR = nl2br($this->address);
+
+        return $addressWithBR;
+    }
 }

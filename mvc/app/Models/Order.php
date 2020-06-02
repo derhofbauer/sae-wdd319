@@ -28,7 +28,7 @@ class Order
     public $id = 0;
     public $crdate = 0;
     public $user_id = 0;
-    public $products = '';
+    protected $products = '';
     public $delivery_address_id = 0;
     public $invoice_address_id = 0;
     public $payment_id = 0;
@@ -125,5 +125,76 @@ class Order
     public function getProducts ()
     {
         return json_decode($this->products);
+    }
+
+    /**
+     * In der Datenbank soll ein JSON-String aller Produkte der Order gespeichert werden. Wenn wir die Produkte des
+     * Models setzen, serialisieren wir sie also direkt, damit wir sie dann einfach speichern können.
+     *
+     * @param $products
+     */
+    public function setProducts ($products)
+    {
+        $this->products = json_encode($products);
+    }
+
+    /**
+     * Um den Gesamtpreis einer Order berechnen zu können, müssen alle Produkte aus der Order unter Berücksichtigung der
+     * jeweiligen Stückzahl durchgegangen und zusammengerechnet werden.
+     *
+     * @return float|int
+     */
+    public function getPrice ()
+    {
+        $price = 0;
+
+        /**
+         * Wir verwenden hier die getProducts()-Methode und nicht die $products-Property, weil die Property ein JSON-
+         * String ist und die Methode aber einen de-serialisierten Array an Objekten zurück gibt.
+         */
+        foreach ($this->getProducts() as $product) {
+            $price += $product->price * $product->quantity;
+        }
+
+        return $price;
+    }
+
+    /**
+     * Daten der Lieferadresse aus der Datenbank laden.
+     *
+     * @return Address
+     */
+    public function getDeliveryAddress ()
+    {
+        $address = Address::find($this->delivery_address_id);
+        return $address;
+    }
+
+    /**
+     * Methode, die im ModelTrait nicht implementiert ist, weil sie einen Use-Case abdeckt, der nicht allgemein genug
+     * ist. Wir möchten Zahlungsmethoden nämlich auch für nur einen einzigen User finden können. Diese Methode ist von
+     * der Logik her eine Mischung zwischen den Methoden all() und find(). Erklärungen können daher im ModelTrait bei
+     * den entsprechenden Methoden gefunden werden.
+     *
+     * @param int $userId
+     *
+     * @return array
+     */
+    public static function findByUser (int $userId)
+    {
+        $db = new Database();
+
+        $tableName = self::$tableName;
+        $result = $db->query("SELECT * FROM {$tableName} WHERE user_id = ?", [
+            'i:user_id' => $userId
+        ]);
+
+        $data = [];
+        foreach ($result as $resultItem) {
+            $date = new self($resultItem);
+            $data[] = $date;
+        }
+
+        return $data;
     }
 }
