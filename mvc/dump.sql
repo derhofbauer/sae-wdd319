@@ -3,29 +3,25 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Erstellungszeit: 28. Mai 2020 um 19:11
--- Server-Version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
--- PHP-Version: 7.4.3
+-- Generation Time: Jun 03, 2020 at 07:08 PM
+-- Server version: 10.4.12-MariaDB-1:10.4.12+maria~bionic
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
 --
--- Datenbank: `mvc`
+-- Database: `mvc`
 --
+CREATE DATABASE IF NOT EXISTS `mvc` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `mvc`;
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `addresses`
+-- Table structure for table `addresses`
 --
 
 DROP TABLE IF EXISTS `addresses`;
@@ -36,18 +32,19 @@ CREATE TABLE `addresses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `addresses`
+-- Dumping data for table `addresses`
 --
 
 INSERT INTO `addresses` (`id`, `user_id`, `address`) VALUES
-(1, 2, 'Hohenstaufengasse 6\r\n1010 Wien\r\nÖsterreich'),
+(1, 1, 'Hohenstaufengasse 6\r\n1010 Wien\r\nÖsterreich'),
 (2, 2, 'Hohenstaufengasse 8\r\n1010 Wien\r\nÖsterreich'),
-(3, 2, 'Hohenstaufengasse 10\r\n1010 Wien\r\nÖsterreich');
+(3, 2, 'Hohenstaufengasse 10\r\n1010 Wien\r\nÖsterreich'),
+(4, 1, 'Musterstraße 42,\r\n1234 Wien');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `orders`
+-- Table structure for table `orders`
 --
 
 DROP TABLE IF EXISTS `orders`;
@@ -63,18 +60,20 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `orders`
+-- Dumping data for table `orders`
 --
 
 INSERT INTO `orders` (`id`, `crdate`, `user_id`, `products`, `delivery_address_id`, `invoice_address_id`, `payment_id`, `status`) VALUES
 (1, '2020-05-12 17:20:32', 2, '[\r\n  {\r\n    \"id\": 1,\r\n    \"name\": \"Produkt 1\",\r\n    \"price\": 9.99,\r\n    \"quantity\": 1\r\n  },\r\n  {\r\n    \"id\": 2,\r\n    \"name\": \"Produkt 2\",\r\n    \"price\": 42.00,\r\n    \"quantity\": 2\r\n  },\r\n  {\r\n    \"id\": 3,\r\n    \"name\": \"Produkt 3\",\r\n    \"price\": 10,\r\n    \"quantity\": 3\r\n  }\r\n]', 3, 1, 1, 'in progress'),
 (2, '2020-05-12 17:20:32', 2, '[]', 1, 1, 1, 'in progress'),
-(3, '2020-05-12 17:20:32', 2, '[]', 1, 1, 1, 'storno');
+(3, '2020-05-12 17:20:32', 2, '[]', 1, 1, 1, 'storno'),
+(4, '2020-06-02 17:05:54', 1, '[{\"id\":3,\"name\":\"Product #3\",\"description\":\"Product #3 Desc\",\"price\":42,\"stock\":9,\"images\":[\"uploads\\/1589995090_37844315_454803461597516_8815318794768482304_n (1).jpg\",\"uploads\\/1589995431_pimp-rollator.jpg\"],\"quantity\":1},{\"id\":4,\"name\":\"Product #4\",\"description\":\"Product #4 Desc\",\"price\":12.99,\"stock\":10,\"images\":[\"uploads\\/1589996660_pimp-rollator.jpg\"],\"quantity\":1}]', 4, 4, 3, 'open'),
+(5, '2020-06-02 17:37:56', 1, '[{\"id\":3,\"name\":\"Product #3\",\"description\":\"Product #3 Desc\",\"price\":42,\"stock\":9,\"images\":[\"uploads\\/1589995090_37844315_454803461597516_8815318794768482304_n (1).jpg\",\"uploads\\/1589995431_pimp-rollator.jpg\"],\"quantity\":2}]', 4, 4, 3, 'open');
 
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `payments`
+-- Table structure for table `payments`
 --
 
 DROP TABLE IF EXISTS `payments`;
@@ -88,7 +87,7 @@ CREATE TABLE `payments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='keine realistische Payments Tabelle!!';
 
 --
--- Daten für Tabelle `payments`
+-- Dumping data for table `payments`
 --
 
 INSERT INTO `payments` (`id`, `name`, `number`, `expires`, `ccv`, `user_id`) VALUES
@@ -99,7 +98,7 @@ INSERT INTO `payments` (`id`, `name`, `number`, `expires`, `ccv`, `user_id`) VAL
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `products`
+-- Table structure for table `products`
 --
 
 DROP TABLE IF EXISTS `products`;
@@ -113,7 +112,7 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `products`
+-- Dumping data for table `products`
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`) VALUES
@@ -124,7 +123,7 @@ INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `images`)
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `users`
+-- Table structure for table `users`
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -138,84 +137,81 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Daten für Tabelle `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `is_admin`) VALUES
-(1, 'Arthur', 'Dent', 'arthur.dent@galaxy.com', '$2y$12$Ce.K9H2fW0biynPXeb5pHekGx2SYzMSOnm6TEki.cj2DDqVvCzcr2', 1),
+(1, 'Arthur', 'Dent', 'arthur.dent@galaxy.com', '$2y$10$ARj58lJiW3C93Vbfeq7qs.X/UXGIL3w6MCCeCKI0KIXqLjTryGQee', 1),
 (2, 'Max', 'Mustermann', 'max.mustermann@email.com', '$2y$12$X5x2waADn8m/7y30qj8CrOihPScwmwPo5Fj8VFgaaA9U1iyom5a22', 0),
-(5, 'Alexander', 'Hofbauer', 'hofbauer.alexander@gmail.com', '$2y$10$SyL6F3XDe7KRJq2Nuq0GteXc6gOOlvFlyi9x3yEHM5pMvBGgCSL6K', 0);
+(5, 'Alexander', 'Hofbauer', 'something@email.com', '$2y$10$SyL6F3XDe7KRJq2Nuq0GteXc6gOOlvFlyi9x3yEHM5pMvBGgCSL6K', 0);
 
 --
--- Indizes der exportierten Tabellen
+-- Indexes for dumped tables
 --
 
 --
--- Indizes für die Tabelle `addresses`
+-- Indexes for table `addresses`
 --
 ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indizes für die Tabelle `orders`
+-- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indizes für die Tabelle `payments`
+-- Indexes for table `payments`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indizes für die Tabelle `products`
+-- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indizes für die Tabelle `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT für exportierte Tabellen
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT für Tabelle `addresses`
+-- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT für Tabelle `orders`
+-- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT für Tabelle `payments`
+-- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT für Tabelle `products`
+-- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT für Tabelle `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
