@@ -48,8 +48,14 @@ trait ModelTrait
 
         /**
          * Query definieren, im Hintergrund (Database-Klasse) in ein Prepared Statement umformen und abschicken
+         *
+         * @todo: comment
          */
-        $result = $db->query("SELECT * FROM $tableName");
+        if (property_exists(self::class, 'softDelete') && self::$softDelete === true) {
+            $result = $db->query("SELECT * FROM $tableName WHERE is_deleted IS NOT TRUE");
+        } else {
+            $result = $db->query("SELECT * FROM $tableName");
+        }
 
         /**
          * Hier gehen wir alle Ergebnisse des Query's durch und erstellen ein neues Objekt aus jeder Zeile und befüllen
@@ -96,6 +102,32 @@ trait ModelTrait
         $data = new self($result[0]);
 
         return $data;
+    }
+
+    /**
+     * @param int  $id
+     *
+     * @param bool $soft
+     *
+     * @return bool|mixed
+     * @todo: comment
+     */
+    public static function delete (int $id)
+    {
+        $db = new Database();
+
+        $tableName = self::$tableName;
+        if (property_exists(self::class, 'softDelete') && self::$softDelete === true) {
+            $result = $db->query("UPDATE {$tableName} SET is_deleted = 1 WHERE id = ?", [
+                'i:id' => $id
+            ]);
+        } else {
+            $result = $db->query("DELETE FROM {$tableName} WHERE id = ?", [
+                'i:id' => $id
+            ]);
+        }
+
+        return $result;
     }
 
 }

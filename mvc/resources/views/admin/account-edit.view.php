@@ -14,7 +14,7 @@ if ($flashMessage !== null) {
 }
 ?>
 
-<form action="account/do-edit" method="post">
+<form action="dashboard/accounts/do-edit/<?php echo $user->id; ?>" method="post">
     <div class="form-group">
         <label for="firstname">Vorname</label>
         <input name="firstname" class="form-control" placeholder="Vorname" type="text" value="<?php echo $user->firstname; ?>">

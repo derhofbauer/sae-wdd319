@@ -17,6 +17,11 @@ trait BaseUser
     protected $password = '';
     public $id = 0;
     public static $tableName = 'users';
+    /**
+     * @todo: comment
+     * @var bool
+     */
+    public static $softDelete = true;
 
     /**
      * Stimmt das Passwort aus dem Login Formular mit dem Hash in der Datenbank überein?
@@ -141,7 +146,8 @@ trait BaseUser
      *
      * @return bool|BaseUser
      */
-    public static function findByEmail (string $email) {
+    public static function findByEmail (string $email)
+    {
         $db = new Database();
 
         $tableName = self::$tableName;
