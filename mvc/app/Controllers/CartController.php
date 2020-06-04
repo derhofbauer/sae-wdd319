@@ -35,15 +35,29 @@ class CartController
         $cart = new Cart();
 
         /**
-         * 1 Stück von $productId hinzufügen
+         * Anzahl der hinzuzufügenden Produkte aus dem Formular auslesen. Wir prüfen ob der Wert numerisch ist, weil es
+         * sehr einfach ist die HTML Frontend-Validierung zu umgehen. Es handelt sich hier also um eine sehr sehr
+         * rudimentäre Validierung.
          */
-        $cart->addProduct($productId);
+        if (isset($_POST['quantity']) && is_numeric($_POST['quantity'])) {
+            /**
+             * Produkte in der angegebenen Anzahl ins Cart legen. Der 2. Parameter der addProduct()-Methode wurde von
+             * uns vorbereitet und kann hier nun verwendet werden.
+             */
+            $cart->addProduct($productId, $_POST['quantity']);
+        } else {
+            /**
+             * 1 Stück von $productId hinzufügen
+             */
+            $cart->addProduct($productId);
+        }
 
         /**
          * Auf die vorherige URL zurück leiten.
          */
         $referrer = Session::get('referrer');
         header("Location: $referrer");
+        exit;
     }
 
     /**

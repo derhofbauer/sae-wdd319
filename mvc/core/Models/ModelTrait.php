@@ -47,9 +47,11 @@ trait ModelTrait
         $tableName = self::$tableName;
 
         /**
-         * Query definieren, im Hintergrund (Database-Klasse) in ein Prepared Statement umformen und abschicken
-         *
-         * @todo: comment
+         * Query definieren, im Hintergrund (Database-Klasse) in ein Prepared Statement umformen und abschicken.
+         * Unterstützt das Model, in dem der ModelTrait verwendet wird, Soft Deletes, so werden hier alle nicht
+         * gelöschten Datensätze geladen. Ein Datensatz ist dann gelöscht, wenn die is_deleted Spalte in der Datenbank
+         * 1 ist. Werden Soft Deletes nicht unterstützt, so werden alle Datensätze geladen, weil gelöschte Datensätze
+         * auch tatsächlich einfach weg sind.
          */
         if (property_exists(self::class, 'softDelete') && self::$softDelete === true) {
             $result = $db->query("SELECT * FROM $tableName WHERE is_deleted IS NOT TRUE");
@@ -105,18 +107,23 @@ trait ModelTrait
     }
 
     /**
-     * @param int  $id
+     * Datensatz aus der Datenbank löschen.
      *
-     * @param bool $soft
+     * @param int $id
      *
      * @return bool|mixed
-     * @todo: comment
      */
     public static function delete (int $id)
     {
         $db = new Database();
 
         $tableName = self::$tableName;
+
+        /**
+         * Unterstützt das Model, in dem der ModelTrait verwendet wird, Soft Deletes, so wird der Datensatz nicht
+         * gelöscht sondern lediglich is_deleted auf 1 gesetzt. Andernfalls wird der Datensatz unwiederbringlich
+         * gelöscht.
+         */
         if (property_exists(self::class, 'softDelete') && self::$softDelete === true) {
             $result = $db->query("UPDATE {$tableName} SET is_deleted = 1 WHERE id = ?", [
                 'i:id' => $id

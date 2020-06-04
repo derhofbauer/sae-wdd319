@@ -39,6 +39,11 @@ class AdminAccountController
         }
     }
 
+    /**
+     * Formular zur Bearbeitung eines Accounts als Admin
+     *
+     * @param int $id
+     */
     public function editForm (int $id)
     {
         /**
@@ -65,9 +70,9 @@ class AdminAccountController
     }
 
     /**
-     * @param int $id
+     * Daten aus Bearbeitungsformular entegegennehmen und verarbeiten.
      *
-     * @todo: comment
+     * @param int $id
      */
     public function edit (int $id)
     {
@@ -107,7 +112,7 @@ class AdminAccountController
             }
 
             /**
-             * @todo: comment
+             * Wenn die isAdmin-Checkbox im Formular angehakerlt ist, dann soll $user->is_admin true sein, sonst false.
              */
             $user->is_admin = (isset($_POST['isAdmin']) && $_POST['isAdmin'] === 'on') ? true : false;
 
@@ -135,35 +140,53 @@ class AdminAccountController
     }
 
     /**
-     * @param int $id
+     * Bestätigung, ob die Löschung eines Accounts wirklich durchgeführt werden soll.
      *
-     * @todo: comment
+     * @param int $id
      */
     public function deleteForm (int $id)
     {
+        /**
+         * Ist ein User eingeloggt und ist er Admin?
+         */
         if (User::isLoggedIn() && User::getLoggedInUser()->is_admin === true) {
 
+            /**
+             * User, der gelöscht werden soll, aus der Datenbank holen, damit wir im View eine spezifische Frage
+             * formulieren können.
+             */
             $user = User::find($id);
 
+            /**
+             * View laden und zu löschenden User übergeben.
+             */
             View::load('admin/confirm-user-delete', [
                 'user' => $user
             ]);
-        } else /**
-         * Ist kein Admin User eingeloggt, leiten wir auf den Login weiter.
-         */ {
+        } else {
+            /**
+             * Ist kein Admin User eingeloggt, leiten wir auf den Login weiter.
+             */
             header("Location: login");
         }
     }
 
     /**
-     * @param int $id
+     * Account nach Bestätiung wirklich löschen.
      *
-     * @todo: comment
+     * @param int $id
      */
     public function delete (int $id)
     {
+        /**
+         * Ist ein User eingeloggt und ist er Admin?
+         */
         if (User::isLoggedIn() && User::getLoggedInUser()->is_admin === true) {
 
+            /**
+             * Ein Model sollte alles, was es selbst betrifft, können. Daher kann das Model ein Objekt des eigenen Typs
+             * löschen.
+             */
             User::delete($id);
 
             /**
@@ -172,9 +195,10 @@ class AdminAccountController
             $baseUrl = Config::get('app.baseUrl');
             header("Location: {$baseUrl}dashboard/accounts");
 
-        } else /**
-         * Ist kein Admin User eingeloggt, leiten wir auf den Login weiter.
-         */ {
+        } else {
+            /**
+             * Ist kein Admin User eingeloggt, leiten wir auf den Login weiter.
+             */
             header("Location: login");
         }
     }

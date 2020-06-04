@@ -48,6 +48,17 @@ class AuthController
         }
     }
 
+    /**
+     * In der Angabe steht, dass die der Login serverseitig validiert werden soll. Das macht allerdings überhaupt keinen
+     * Sinn. Es macht nur Sinn hier den Benutzernamen zu validieren, damit kein MySQL Query abgeschickt wird, wenn von
+     * Vorn herein klar ist, dass kein User gefunden werden wird (bspw. wenn die Email-Adresse als Username verwendet
+     * wird und keine gültige Adresse eingegeben wird). Genauso für das Passwort. Ist klar, dass es nicht zutreffen
+     * wird, weil es die Anforderungen nicht erfüllt, die bei der Registrierung forciert werden, dann kann ein MySQL
+     * Query eingespart werden. Es wird aber mit großer Wahrscheinlichkeit zu inkonsistenzen kommen, wenn die Passwort
+     * Regeln sich ändern oder im Admin Bereich ein Passwort zurückgesetzt wird und da andere Regeln angewendet werden,
+     * weil unsauber programmiert wurde. Fazit: eine Validierung hat hier winzige Performance Verbesserungen, macht aber
+     * vermutlich mehr Probleme als sie löst.
+     */
     public function login ()
     {
         /**
@@ -158,7 +169,6 @@ class AuthController
      */
     public function signup ()
     {
-        // var_dump($_POST);
         $baseUrl = Config::get('app.baseUrl');
 
         /**

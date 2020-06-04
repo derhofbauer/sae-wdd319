@@ -6,7 +6,10 @@
         </div>
         <div class="price"><?php printf('%0.2f ,-', $product->price); ?></div>
 
-        <a href="cart/add/<?php echo $product->id; ?>" class="btn btn-primary">Add to cart</a>
+        <form action="cart/add/<?php echo $product->id; ?>" method="post" class="form-inline">
+            <input type="number" class="form-control" value="1" min="1" name="quantity">
+            <button type="submit" class="btn btn-primary">Add to Cart</button>
+        </form>
 
         <a class="btn btn-default" href="products">View all</a>
     </div>

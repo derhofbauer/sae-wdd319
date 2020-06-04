@@ -18,7 +18,10 @@ trait BaseUser
     public $id = 0;
     public static $tableName = 'users';
     /**
-     * @todo: comment
+     * Die $softDelete Property steuert, ob ein Model Soft Deletes unterstützt oder nicht. Wenn die Property existiert
+     * und true ist, dann gehen die all() und die delete() Methode des ModelTraits davon aus, dass Soft Deletes von dem
+     * Model verwendet werden und passen sich an.
+     *
      * @var bool
      */
     public static $softDelete = true;
