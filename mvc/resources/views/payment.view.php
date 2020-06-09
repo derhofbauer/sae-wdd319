@@ -3,6 +3,16 @@
 <div class="row">
     <div class="col chose-payment">
         <h3>Choose Payment</h3>
+
+        <?php
+        /**
+         * Fehler ausgeben, die potentiell aufgetreten sind.
+         */
+        ?>
+        <?php foreach ($errors as $error): ?>
+            <p class="alert alert-danger"><?php echo $error; ?></p>
+        <?php endforeach; ?>
+
         <form action="checkout/handle-payment" method="post">
             <div class="form-group">
                 <label for="payment" class="sr-only">Choose payment</label>

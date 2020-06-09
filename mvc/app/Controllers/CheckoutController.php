@@ -38,10 +38,16 @@ class CheckoutController
             $payments = Payment::findByUser($user->id);
 
             /**
-             * View laden und abgefragte Zahlungsmethoden übergeben.
+             * Potentielle Validierungsfehler aus der Session holen
+             */
+            $errors = Session::get('errors', [], true);
+
+            /**
+             * View laden und abgefragte Zahlungsmethoden und etwaige Fehler übergeben.
              */
             View::load('payment', [
-                'payments' => $payments
+                'payments' => $payments,
+                'errors' => $errors
             ]);
         } else {
             /**
@@ -57,6 +63,12 @@ class CheckoutController
     public function handlePayment ()
     {
         /**
+         * Die $baseUrl können wir weit nach oben ziehen, weil wir sie weiter unten an mehreren Stellen verwenden und
+         * sie nicht unten jedes Mal definieren möchten, sondern einmal und dann wiederverwenden.
+         */
+        $baseUrl = Config::get('app.baseUrl');
+
+        /**
          * Wir verzichten der Übersichtlichkeit halber auf eine Validierung. Eigentlich müsste hier eine Daten-
          * validierung durchgeführt werden und etwaige Fehler an den User zurückgespielt werden. Im Login machen wir das
          * beispielsweise und auch bei der Bearbeitung eines Produkts. Der nachfolgende Code dürfte gar nicht mehr
@@ -69,9 +81,9 @@ class CheckoutController
         $user = User::getLoggedInUser();
 
         /**
-         * Wurde das linke Formular abgeschickt?
+         * Wurde das linke Formular abgeschickt und ein Wert ausgewählt?
          */
-        if (isset($_POST['payment'])) {
+        if (isset($_POST['payment']) && $_POST['payment'] !== '_default') {
             /**
              * Ausgefühlte PaymentId in die Session speichern, damit wir sie in einem weiteren Checkout-Schritt wieder
              * verwenden können.
@@ -80,9 +92,9 @@ class CheckoutController
         }
 
         /**
-         * Wurde das rechte Formular abgeschickt?
+         * Wurde das rechte Formular abgeschickt und ein Wert in das Name-Feld eingegeben?
          */
-        if (isset($_POST['name'])) {
+        if (isset($_POST['name']) && !empty($_POST['name'])) {
             /**
              * Neue Payment Methode erstellen und in die Datenbank speichern.
              */
@@ -102,10 +114,43 @@ class CheckoutController
         }
 
         /**
+         * Oben sind folgende Fälle abgedeckt:
+         *  + Ein existierendes Payment wurde aus dem Dropdown gewählt
+         *  + Ein neues Payment wurde in das Formular eingegeben
+         * Was noch nicht abgedeckt ist, wenn weder ein Payment ausgewählt wurde noch ein neues Payment angelegt wurde.
+         *
+         * Hier prüfen wir also, ob KEIN payment geschickt wurde oder der Standard Wert aus dem Formular übergeben wurde
+         * UND ob das Namens feld NICHT oder LEER übergeben wurde. Das ist eine relativ komplexe Bedingung, daher habe
+         * ich sie zur besseren Übersicht in mehrere Zeilen aufgeteilt.
+         */
+        if (
+            (
+                !isset($_POST['payment']) ||
+                $_POST['payment'] === '_default'
+            )
+            &&
+            (
+                !isset($_POST['name']) ||
+                empty($_POST['name'])
+            )
+        ) {
+            /**
+             * Wurde weder ein Payment ausgewählt noch ein neues eingegeben, so schreiben wir einen Error und leiten zu
+             * dem Formular zurück, von dem wir gekommen sind.
+             */
+            Session::set('errors', [
+                'Payment auswählen ODER ein neues anlegen.'
+            ]);
+
+            header("Location: {$baseUrl}checkout");
+            exit;
+        }
+
+        /**
          * Weiterleiten auf den nächsten Schritt im Checkout Prozess.
          */
-        $baseUrl = Config::get('app.baseUrl');
         header("Location: {$baseUrl}checkout/address");
+        exit;
     }
 
     /**
