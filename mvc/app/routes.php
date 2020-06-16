@@ -65,5 +65,10 @@ return [
      */
     '/account' => 'AccountController.editForm',
     '/account/orders' => 'AccountController.orders',
-    '/account/do-edit' => 'AccountController.edit'
+    '/account/do-edit' => 'AccountController.edit',
+
+    /**
+     * PDF Test Routes
+     */
+    '/pdf/{id}' => 'PdfController.example'
 ];

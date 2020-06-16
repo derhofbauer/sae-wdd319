@@ -3,7 +3,19 @@
 /**
  * [x] Bootstrap file laden & anstarten
  * [x] Autoloader starten
+ * [x] Composer Autoloader laden
  */
+
+/**
+ * Seit wir Composer verwenden, möchten wir auch Prüfen, ob die Abhängigkeiten installiert sind oder ob sie Fehlen und
+ * es somit zu Fehler in den Controllern, wo über Composer installierte Libraries verwendet werden, kommen kann.
+ */
+$composerAutoloadFile = 'vendor/autoload.php';
+if (file_exists($composerAutoloadFile)) {
+    require_once $composerAutoloadFile;
+} else {
+    exit('Fatal Error: Composer dependencies not installed! Please run `composer install` to install them.');
+}
 
 /**
  * spl_autoload_register Funktion akzeptiert einen Parameter, eine Funktion. Diese Funktion wird aufgerufen, wenn eine
