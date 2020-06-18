@@ -85,7 +85,7 @@ class CheckoutController
          */
         if (isset($_POST['payment']) && $_POST['payment'] !== '_default') {
             /**
-             * Ausgefühlte PaymentId in die Session speichern, damit wir sie in einem weiteren Checkout-Schritt wieder
+             * Ausgefüllte PaymentId in die Session speichern, damit wir sie in einem weiteren Checkout-Schritt wieder
              * verwenden können.
              */
             Session::set(self::PAYMENT_KEY, (int)$_POST['payment']);
