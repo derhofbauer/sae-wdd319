@@ -71,7 +71,7 @@ class AdminProductController
          */
         $product = Product::find($id);
         /**
-         * Eigenschafen des Products überschreiben. Die Daten werden dabei nicht direkt in die Datenbank geschpeichert
+         * Eigenschafen des Products überschreiben. Die Daten werden dabei nicht direkt in die Datenbank gespeichert
          * sondern nur in dem PHP Objekt.
          */
         $product->name = $_POST['name'];

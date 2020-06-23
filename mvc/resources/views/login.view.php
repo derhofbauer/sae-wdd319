@@ -6,6 +6,8 @@
             <p class="text-danger text-center"><?php echo $error; ?></p>
         <?php endforeach; ?>
         <form action="do-login" method="post">
+            <input type="hidden" name="csrfToken" value="<?php echo $csrfToken; ?>">
+
             <div class="form-group">
                 <div class="input-group">
                     <input name="email" class="form-control" placeholder="Email" type="email">
