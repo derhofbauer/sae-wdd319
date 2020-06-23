@@ -42,8 +42,19 @@ class AuthController
              * Login-Vorgang aufgetreten sein könnten (merke Konjunktiv), an den View. Hier verwenden wir den
              * $forgetAfterReturn Parameter der Session::get Methode.
              */
+
+            /**
+             * Normalerweise besteht ein CSRF Token aus alphanumerischen Zeichen. Zur Demonstration des Prinzips, reicht
+             * hier aber auch das UNIX-Date. Der Token wird generiert, in die Session gespeichert UND an das
+             * abzusichernde Formular übergeben, damit dann, wenn das Formular entgegengenommen wird, der Token aus
+             * Formular und Session verglichen und die Gültigkeit des Formulars dadurch verifiziert werden kann.
+             */
+            $token = time();
+            Session::set('csrfToken', $token);
+
             View::load('login', [
                 'errors' => Session::get('errors', [], true),
+                'csrfToken' => $token
             ]);
         }
     }
@@ -61,6 +72,29 @@ class AuthController
      */
     public function login ()
     {
+        /**
+         * CSRF Token aus Formular und Session auslesen, um sie vergleichen zu können.
+         */
+        $csrfTokenFromForm = (string)$_POST['csrfToken'];
+        $csrfTokenFromSession = (string)Session::get('csrfToken');
+
+        /**
+         * CSRF Tokens vergleichen
+         */
+        if ($csrfTokenFromForm !== $csrfTokenFromSession) {
+            /**
+             * Stimmen die Tokens nicht überein, ist die Wahrscheinlichkeit hoch, dass
+             * a) in einem anderen Tab das selbe Formular aufgemacht wurde und somit ein neuer CSRF Token generiert und
+             *    in die Session gespeichert wurde und somit der Token aus dem aktuellen Formular nicht mehr stimmt
+             * b) ein Harlunke in böswilliger Absicht Phishing betrieben hat.
+             *
+             * Den Account direkt zu sperren ist also vielleicht nicht der richtige Weg, aber man könnte beispielsweise
+             * den User benachrichtigen oder in Kombination mit anderen durchgeführten Prüfungen dann erst den Account
+             * sperren.
+             */
+            exit('öha!');
+        }
+
         /**
          * Ist ein Account bereits eingeloggt und braucht sich daher nicht nochmal einloggen?
          */
